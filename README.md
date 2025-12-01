@@ -1,2 +1,2 @@
-# TaskManagement_Yellow
-Task Management System for Team Yellow - NSC
+# TaskManagement_A
+Task Management System for Team A - NSC
