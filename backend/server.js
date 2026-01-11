@@ -1,10 +1,13 @@
-const express = require("express");
-const pool = require("./db");
+import express from 'express';
+import pool from './db.js';
+
 const app = express();
 const port = 5000;
 
-app.get("/api/", (req, res) => {
-  res.send({ test: "Hello World" });
+console.log(pool);
+
+app.get('/api/', (_req, res) => {
+  res.send({ test: 'Hello World' });
 });
 
 app.listen(port, () => {

@@ -1,11 +1,9 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:15-alpine
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d database"]
+      test: ['CMD-SHELL', 'pg_isready -U user -d database']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -14,15 +12,18 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
-      - "5000:5000"
+      - '5000:5000'
     volumes:
-      - ./backend:/app
+      - ./backend:/app/backend
       - /app/node_modules
+      - /app/backend/node_modules
     environment:
       DATABASE_URL: postgres://user:password@db:5432/database
     depends_on:
@@ -30,12 +31,15 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
-      - "5173:5173"
+      - '5173:5173'
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app/frontend
       - /app/node_modules
+      - /app/frontend/node_modules
     environment:
       NODE_ENV: development
     depends_on:

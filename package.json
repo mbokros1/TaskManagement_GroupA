@@ -1,0 +1,32 @@
+{
+  "name": "taskmanagement_a",
+  "version": " 0.0.1",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "lint:all": "npm run lint --workspaces"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx,css,json}": [
+      "prettier --write",
+      "npm run lint --prefix frontend"
+    ],
+    "backend/**/*.{js,ts,json}": [
+      "prettier --write",
+      "npm run lint --prefix frontend"
+    ],
+    "**/*.{json,md,yml}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4"
+  }
+}
