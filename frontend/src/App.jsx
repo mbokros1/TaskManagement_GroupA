@@ -1,8 +1,8 @@
-import "./App.css";
-import { Button } from "@mui/material";
+import './App.css';
+import { Button } from '@mui/material';
 
 function App() {
-  fetch("/api")
+  fetch('/api')
     .then((res) => res.json())
     .then((res) => console.log(res));
 
