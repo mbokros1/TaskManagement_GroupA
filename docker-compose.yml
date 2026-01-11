@@ -15,15 +15,12 @@ services:
       - '5432:5432'
 
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
+    build: ./backend
     ports:
       - '5000:5000'
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app
       - /app/node_modules
-      - /app/backend/node_modules
     environment:
       DATABASE_URL: postgres://user:password@db:5432/database
     depends_on:
@@ -31,15 +28,12 @@ services:
         condition: service_healthy
 
   frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
+    build: ./frontend
     ports:
       - '5173:5173'
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app
       - /app/node_modules
-      - /app/frontend/node_modules
     environment:
       NODE_ENV: development
     depends_on:
