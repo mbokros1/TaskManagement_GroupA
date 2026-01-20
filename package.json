@@ -1,0 +1,27 @@
+{
+  "name": "taskmanagement_a",
+  "version": " 0.0.1",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down -v",
+    "docker:clean": "docker compose down --rmi all --volumes --remove-orphans"
+  },
+  "lint-staged": {
+    "frontend/src/**/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "npm run lint --prefix frontend"
+    ],
+    "backend/src/**/*.{js,ts}": [
+      "npx prettier --write",
+      "npm run lint --prefix backend"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4"
+  }
+}
