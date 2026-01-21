@@ -2,6 +2,11 @@
 
 Task Management System for Team A - NSC
 
+## Requirements
+
+- Node / npm
+- Docker
+
 ## Development Setup
 
 1. Clone the repo
