@@ -1,11 +1,10 @@
 import { useState } from "react";
 
 function CreateTicketForm(){
-    const today = new Date();
     const [ticketname, setTicketName] = useState("");
     const [description, setDescription] = useState("");
-    const [startDate, setStartDate] = useState(today);
-    const [dueDate, setDueDate] = useState(today);
+    const [startDate, setStartDate] = useState("");
+    const [dueDate, setDueDate] = useState("");
     const [assignment, setAssignment] = useState("");
 
     const handleCreateTicketSubmit = async (e) => {
@@ -32,13 +31,13 @@ function CreateTicketForm(){
             onChange={e => setStartDate(new Date(e.target.value))}
             //Both Canada and India use dd/mm/yy format
             // TODO: validate that user input is actually a date
-            placeholder={`${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`}
+            placeholder=""
             />
             <input 
             value={dueDate}
             onChange={e => setDueDate(new Date(e.target.value))}
             // TODO: validate that user input is actually a date
-            placeholder={`${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`}
+            placeholder=""
             />
             <input
             value={assignment}
@@ -46,6 +45,7 @@ function CreateTicketForm(){
             placeholder="Assigned to"
             // TODO: make sure that input is a selection from users with dev role
             />
+            <button type="submit">Create Ticket</button>
         </form>
     </div>);
 }
