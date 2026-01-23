@@ -5,7 +5,7 @@ import sequelize from './config/db.js';
 import apiRoutes from './routes/api.js';
 
 const app = express();
-const port = 5000;
+const port = 5050;
 
 app.use(
   cors({

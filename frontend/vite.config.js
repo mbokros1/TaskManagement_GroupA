@@ -10,7 +10,7 @@ export default ({ mode }) => {
       host: true,
       proxy: {
         '/api': {
-          target: 'http://backend:5000',
+          target: 'http://backend:5050',
           changeOrigin: true,
           secure: false,
         },

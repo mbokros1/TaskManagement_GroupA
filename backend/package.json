@@ -16,7 +16,8 @@
     "@eslint/js": "^9.39.2",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
