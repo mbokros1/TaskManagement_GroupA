@@ -7,7 +7,9 @@
     "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down -v",
-    "docker:clean": "docker compose down --rmi all --volumes --remove-orphans"
+    "docker:clean": "docker compose down --rmi all --volumes --remove-orphans",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "lint-staged": {
     "frontend/src/**/*.{js,jsx,ts,tsx}": [
@@ -22,6 +24,7 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "vitest": "^4.0.18"
   }
 }
