@@ -13,39 +13,44 @@ function CreateTicketForm(){
 
     return(<div>
         <h4>Create New Ticket</h4>
-        <form onSubmit={handleCreateTicketSubmit}>
+        <form onSubmit={handleCreateTicketSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            Ticket Name:
             <input 
             value={ticketname}
             onChange={e => setTicketName(e.target.value)}
-            placeholder="task"
+            placeholder="task name"
             required
             // TODO on all: send data in useState to back end
             />
+            Description:
             <input 
             value={description}
             onChange={e => setDescription(e.target.value)}
             placeholder="Please describe this task here."
             />
+            Start Date:
             <input
             value={startDate}
-            onChange={e => setStartDate(new Date(e.target.value))}
+            onChange={e => setStartDate(e.target.value)}
             //Both Canada and India use dd/mm/yy format
             // TODO: validate that user input is actually a date
             placeholder=""
             />
+            Due Date:
             <input 
             value={dueDate}
-            onChange={e => setDueDate(new Date(e.target.value))}
+            onChange={e => setDueDate(e.target.value)}
             // TODO: validate that user input is actually a date
             placeholder=""
             />
+            Assigned To:
             <input
             value={assignment}
             onChange={e => setAssignment(e.target.value)}
             placeholder="Assigned to"
             // TODO: make sure that input is a selection from users with dev role
             />
-            <button type="submit">Create Ticket</button>
+            <button type="submit" style={{backgroundColor: "purple", color: "white"}}>Create Ticket</button>
         </form>
     </div>);
 }
