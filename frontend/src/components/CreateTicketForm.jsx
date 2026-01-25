@@ -1,27 +1,49 @@
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import {
+  TextField,
+  Autocomplete,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
-  const [ticketName, setTicketName] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState(null);
-  const [dueDate, setDueDate] = useState(null);
-  const [assignment, setAssignment] = useState('');
+  const [ticketData, setTicketData] = useState({
+    ticketName: '',
+    description: '',
+    startDate: null,
+    dueDate: null,
+    assignee: '',
+    priority: 'low',
+  });
+
+  const users = [];
+
+  const handleChange = (field) => (value) => {
+    setTicketData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleCreateTicketSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      title: ticketName,
-      description: description,
-      startDate: startDate ? startDate.toISOString() : null, // please let me know if startDate.format() is preferred
-      dueDate: dueDate ? dueDate.toISOString() : null,
-      assigneeID: assignment,
+      title: ticketData.ticketName,
+      description: ticketData.description,
+      startDate: ticketData.startDate
+        ? ticketData.startDate.toISOString()
+        : null, // please let me know if startDate.format() is preferred
+      dueDate: ticketData.dueDate ? ticketData.dueDate.toISOString() : null,
+      assigneeID: ticketData.assignee,
+      priority: ticketData.priority,
     };
-    console.log(payload);
+    //console.log(payload);
 
     try {
       await createTicket(payload);
@@ -32,7 +54,7 @@ function CreateTicketForm() {
 
   const createTicket = async (payload) => {
     const res = await fetch(
-      'http://localhost:5000/tickets', //insert correct endpoint here
+      'http://localhost:5000/api', //per readme the backend is accessible through /api
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,42 +80,59 @@ function CreateTicketForm() {
         >
           <TextField
             label="Ticket Name: "
-            value={ticketName}
-            onChange={(e) => setTicketName(e.target.value)}
+            value={ticketData.ticketName}
+            onChange={(e) => handleChange('ticketName')(e.target.value)}
             placeholder="task name"
             required
-            // TODO on all: send data in useState to back end
           />
           <TextField
             label="Description: "
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={ticketData.description}
+            onChange={(e) => handleChange('description')(e.target.value)}
             placeholder="Please describe this task here."
           />
-          <DateField
+          <DatePicker
             label="Start Date: "
-            value={startDate}
+            value={ticketData.startDate}
             onChange={(newValue) => {
-              setStartDate(newValue);
+              handleChange('startDate')(newValue);
             }}
             disablePast
           />
-          <DateField
+          <DatePicker
             label="Due Date: "
-            value={dueDate}
+            value={ticketData.dueDate}
             onChange={(newValue) => {
-              setDueDate(newValue);
+              handleChange('dueDate')(newValue);
             }}
             disablePast
           />
-          <TextField
+          <Autocomplete
+            options={users}
             label="Assigned To:"
-            value={assignment}
-            onChange={(e) => setAssignment(e.target.value)}
-            placeholder="Assigned to"
-            // TODO: make sure that input is a selection from users with dev role
+            value={ticketData.assignee}
+            onChange={(e, newValue) => handleChange('assignee')(newValue)}
+            renderInput={(params) => <TextField {...params} label="Assignee" />}
           />
-          <Button type="submit" variant="contained" disabled={!ticketName}>
+          <FormControl fullWidth>
+            <InputLabel id="priority-label">Priority</InputLabel>
+            <Select
+              labelId="priority-label"
+              label="Priority"
+              value={ticketData.priority}
+              onChange={(e) => handleChange('priority')(e.target.value)}
+            >
+              <MenuItem value="Low">Low</MenuItem>
+              <MenuItem value="Medium">Medium</MenuItem>
+              <MenuItem value="High">High</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!ticketData.ticketName}
+          >
             Create Ticket
           </Button>
         </form>
