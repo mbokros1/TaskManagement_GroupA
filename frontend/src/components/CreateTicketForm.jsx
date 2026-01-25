@@ -20,6 +20,7 @@ function CreateTicketForm() {
     dueDate: null,
     assignee: '',
     priority: 'low',
+    storyPoints: '1',
   });
 
   const users = [];
@@ -127,6 +128,22 @@ function CreateTicketForm() {
               <MenuItem value="High">High</MenuItem>
             </Select>
           </FormControl>
+
+          <TextField
+            label="Story Points"
+            type="number"
+            value={ticketData.storyPoints}
+            onChange={(e) =>
+              handleChange('storyPoints')(Number(e.target.value))
+            }
+            slotProps={{
+              input: {
+                min: 0,
+                step: 1,
+              },
+            }}
+            fullWidth
+          />
 
           <Button
             type="submit"
