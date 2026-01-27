@@ -55,7 +55,7 @@ function CreateTicketForm() {
 
   const createTicket = async (payload) => {
     const res = await fetch(
-      'http://localhost:5000/api', //per readme the backend is accessible through /api
+      '/api', //per readme the backend is accessible through /api
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
