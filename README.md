@@ -17,3 +17,5 @@ Task Management System for Team A - NSC
 ## Routing
 
 The backend is accessible via a proxied route `/api`. All Express routes setup on the backend must be prefixed with `/api` as well.
+
+- Swagger UI: `http://localhost:5050/docs/`
