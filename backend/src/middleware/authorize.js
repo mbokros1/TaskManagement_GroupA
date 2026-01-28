@@ -7,7 +7,7 @@ export const getRoles = (user) =>
   Array.isArray(user?.roles) ? user.roles : [];
 
 /**
- * Check if user has a specific client role.
+ * Check if user has a specific role.
  * @param {object} user - req.user
  * @param {string} role - role name
  * @returns {boolean}
