@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
-  getClientRoles,
+  getRoles,
   hasRole,
   hasAnyRole,
   hasAllRoles,
@@ -16,9 +16,9 @@ describe('authorize helpers', () => {
     user = { roles: ['admin', 'developer'] };
   });
 
-  it('getClientRoles returns roles array or empty', () => {
-    expect(getClientRoles(user)).toEqual(['admin', 'developer']);
-    expect(getClientRoles({})).toEqual([]);
+  it('getRoles returns roles array or empty', () => {
+    expect(getRoles(user)).toEqual(['admin', 'developer']);
+    expect(getRoles({})).toEqual([]);
   });
 
   it('hasRole checks for a single role', () => {

@@ -1,9 +1,9 @@
 /**
- * Return client roles attached to a user object.
+ * Return roles attached to a user object.
  * @param {object} user - req.user (from verifyToken)
- * @returns {string[]} client role names
+ * @returns {string[]} role names
  */
-export const getClientRoles = (user) =>
+export const getRoles = (user) =>
   Array.isArray(user?.roles) ? user.roles : [];
 
 /**
@@ -12,7 +12,7 @@ export const getClientRoles = (user) =>
  * @param {string} role - role name
  * @returns {boolean}
  */
-export const hasRole = (user, role) => getClientRoles(user).includes(role);
+export const hasRole = (user, role) => getRoles(user).includes(role);
 
 /**
  * Check if user has any of the listed roles.
