@@ -21,18 +21,20 @@ export const verifyToken = async (req, res, next) => {
       return res.status(401).json({ error: 'Token expired' });
     }
 
+    const realmRoles = payload.realm_access?.roles || [];
     const clientId = process.env.KEYCLOAK_CLIENT_ID;
     const clientRoles =
       clientId && payload.resource_access?.[clientId]?.roles
         ? payload.resource_access[clientId].roles
         : [];
+    const roles = [...new Set([...realmRoles, ...clientRoles])];
 
     req.user = {
       sub: payload.sub,
       email: payload.email,
       name: payload.name,
       preferred_username: payload.preferred_username,
-      roles: clientRoles,
+      roles,
     };
     next();
   } catch (err) {
