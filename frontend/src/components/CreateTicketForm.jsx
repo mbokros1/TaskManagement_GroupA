@@ -19,7 +19,7 @@ function CreateTicketForm() {
     startDate: null,
     dueDate: null,
     assignee: '',
-    priority: 'low',
+    priority: 'Low',
     storyPoints: '1',
   });
 
