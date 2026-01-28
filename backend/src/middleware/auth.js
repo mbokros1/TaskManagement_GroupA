@@ -21,12 +21,18 @@ export const verifyToken = async (req, res, next) => {
       return res.status(401).json({ error: 'Token expired' });
     }
 
+    const clientId = process.env.KEYCLOAK_CLIENT_ID;
+    const clientRoles =
+      clientId && payload.resource_access?.[clientId]?.roles
+        ? payload.resource_access[clientId].roles
+        : [];
+
     req.user = {
       sub: payload.sub,
       email: payload.email,
       name: payload.name,
       preferred_username: payload.preferred_username,
-      roles: payload.realm_access.roles || [],
+      roles: clientRoles,
     };
     next();
   } catch (err) {
