@@ -7,7 +7,10 @@ import PropTypes from 'prop-types';
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loadingUser, setLoadingUser] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(
+    () => !!keycloak.authenticated
+  );
+  const [hasFetched, setHasFetched] = useState(false);
 
   const isAuthenticated = !!keycloak.authenticated;
   const isLoading = loadingUser;
@@ -18,7 +21,7 @@ export default function AuthProvider({ children }) {
     []
   );
 
-  const clearUser = useCallback(async () => {
+  const clearUser = useCallback(() => {
     setUser(null);
   }, []);
 
@@ -27,21 +30,28 @@ export default function AuthProvider({ children }) {
     try {
       const res = await api.get('/me');
       setUser(res.data.user);
+      return res.data.user;
     } catch (error) {
       console.error('Failed to fetch user:', error);
       clearUser();
+      throw error;
     } finally {
       setLoadingUser(false);
     }
   }, [clearUser]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchMe();
-    } else {
+    if (!isAuthenticated) {
       clearUser();
+      setHasFetched(false);
+      return;
     }
-  }, [isAuthenticated, fetchMe, clearUser]);
+
+    if (!user && !loadingUser && !hasFetched) {
+      setHasFetched(true);
+      fetchMe();
+    }
+  }, [isAuthenticated, user, loadingUser, fetchMe, clearUser, hasFetched]);
 
   const value = useMemo(() => {
     const roles = getRoles(user);
