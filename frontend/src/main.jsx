@@ -5,6 +5,7 @@ import './index.css';
 import App from './App.jsx';
 import keycloak from './keycloak.js';
 import './api/axios.js';
+import AuthProvider from './auth/AuthProvider.jsx';
 
 setInterval(() => {
   if (keycloak.authenticated) {
@@ -24,7 +25,9 @@ keycloak
   .then(() => {
     createRoot(document.getElementById('root')).render(
       <StrictMode>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </StrictMode>
     );
   })
