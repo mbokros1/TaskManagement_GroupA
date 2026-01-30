@@ -12,8 +12,8 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import keycloak from '../keycloak';
 
@@ -31,11 +31,11 @@ export default function Navbar() {
     }
   }, [keycloak]);
 
-  const [yourWorkAnchor, setYourWorkAnchor] = useState();
-  const [projectsAnchor, setProjectsAnchor] = useState();
-  const [filtersAnchor, setFiltersAnchor] = useState();
-  const [dashboardsAnchor, setDashboardsAnchor] = useState();
-  const [userAnchor, setUserAnchor] = useState();
+  const [yourWorkAnchor, setYourWorkAnchor] = useState(null);
+  const [projectsAnchor, setProjectsAnchor] = useState(null);
+  const [filtersAnchor, setFiltersAnchor] = useState(null);
+  const [dashboardsAnchor, setDashboardsAnchor] = useState(null);
+  const [userAnchor, setUserAnchor] = useState(null);
 
   return (
     <AppBar
