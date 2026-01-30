@@ -7,9 +7,7 @@ import PropTypes from 'prop-types';
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loadingUser, setLoadingUser] = useState(
-    () => !!keycloak.authenticated
-  );
+  const [loadingUser, setLoadingUser] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
 
   const isAuthenticated = !!keycloak.authenticated;
