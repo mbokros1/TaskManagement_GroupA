@@ -7,6 +7,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  ToggleButton,
+  ToggleButtonGroup,
+  Box,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -14,16 +17,25 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
   const [ticketData, setTicketData] = useState({
-    ticketName: '',
+    project: '',
+    issueType: 'Story',
+    summary: '',
     description: '',
-    startDate: null,
-    dueDate: null,
     assignee: '',
     priority: 'Low',
+    labels: '',
+    sprint: '',
     storyPoints: '1',
+    dueDate: null,
   });
 
   const users = [];
+  const issueTypes = [
+    { value: 'Story', color: 'lightblue' },
+    { value: 'Bug', color: 'coral' },
+    { value: 'Task', color: 'lightgreen' },
+    { value: 'Epic', color: 'violet' },
+  ];
 
   const handleChange = (field) => (value) => {
     setTicketData((prev) => ({
@@ -35,14 +47,16 @@ function CreateTicketForm() {
   const handleCreateTicketSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      title: ticketData.ticketName,
+      project: ticketData.project,
+      issueType: ticketData.issueType,
+      title: ticketData.summary,
       description: ticketData.description,
-      startDate: ticketData.startDate
-        ? ticketData.startDate.toISOString()
-        : null, // please let me know if startDate.format() is preferred
-      dueDate: ticketData.dueDate ? ticketData.dueDate.toISOString() : null,
+      dueDate: ticketData.dueDate?.toISOString() ?? null,
       assigneeID: ticketData.assignee,
       priority: ticketData.priority,
+      labels: ticketData.labels.split(',').map((l) => l.trim()),
+      sprint: ticketData.sprint,
+      storyPoints: ticketData.storyPoints,
     };
     //console.log(payload);
 
@@ -79,26 +93,51 @@ function CreateTicketForm() {
           onSubmit={handleCreateTicketSubmit}
           style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
         >
+          <ToggleButtonGroup
+            value={ticketData.issueType}
+            exclusive
+            onChange={(e, value) => value && handleChange('issueType')(value)}
+          >
+            {issueTypes.map(({ value, color }) => (
+              <ToggleButton key={value} value={value}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 0.5,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 20,
+                      height: 20,
+                      bgcolor: color,
+                      borderRadius: '2px',
+                    }}
+                  />
+                  <Box component="span" sx={{ fontSize: 12 }}>
+                    {value}
+                  </Box>
+                </Box>
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+
           <TextField
-            label="Ticket Name: "
-            value={ticketData.ticketName}
-            onChange={(e) => handleChange('ticketName')(e.target.value)}
+            label="Summary: "
+            value={ticketData.summary}
+            onChange={(e) => handleChange('summary')(e.target.value)}
             placeholder="task name"
             required
           />
           <TextField
             label="Description: "
+            multiline
+            minRows={4}
             value={ticketData.description}
             onChange={(e) => handleChange('description')(e.target.value)}
             placeholder="Please describe this task here."
-          />
-          <DatePicker
-            label="Start Date: "
-            value={ticketData.startDate}
-            onChange={(newValue) => {
-              handleChange('startDate')(newValue);
-            }}
-            disablePast
           />
           <DatePicker
             label="Due Date: "
@@ -129,26 +168,45 @@ function CreateTicketForm() {
             </Select>
           </FormControl>
 
-          <TextField
-            label="Story Points"
-            type="number"
+          <ToggleButtonGroup
             value={ticketData.storyPoints}
-            onChange={(e) =>
-              handleChange('storyPoints')(Number(e.target.value))
-            }
-            slotProps={{
-              input: {
-                min: 0,
-                step: 1,
-              },
-            }}
-            fullWidth
+            exclusive
+            onChange={(e, value) => value && handleChange('storyPoints')(value)}
+          >
+            {[1, 2, 3, 5, 8, 13].map((point) => (
+              <ToggleButton key={point} value={point}>
+                {point}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+
+          <TextField
+            label="Labels"
+            placeholder="frontend, api, sprint-12"
+            value={ticketData.labels}
+            onChange={(e) => handleChange('labels')(e.target.value)}
           />
+          <FormControl fullWidth>
+            <InputLabel>Sprint</InputLabel>
+            <Select
+              value={ticketData.sprint}
+              label="Sprint"
+              onChange={(e) => handleChange('sprint')(e.target.value)}
+            >
+              <MenuItem value="Sprint 1">Sprint 1</MenuItem>
+              <MenuItem value="Sprint 2">Sprint 2</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button variant="outlined" component="label">
+            Add Attachment
+            <input type="file" hidden />
+          </Button>
 
           <Button
             type="submit"
             variant="contained"
-            disabled={!ticketData.ticketName}
+            disabled={!ticketData.summary}
           >
             Create Ticket
           </Button>
