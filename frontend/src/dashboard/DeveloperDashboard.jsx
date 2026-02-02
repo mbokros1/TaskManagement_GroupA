@@ -168,11 +168,11 @@ function DeveloperDashboard() {
                         <Table aria-lable="My ticket table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Assignee</TableCell>
-                                    <TableCell align="right">Work</TableCell>
-                                    <TableCell align="right">Date Created</TableCell>
-                                    <TableCell align="right">Priority</TableCell>
-                                    <TableCell align="right">Status</TableCell>
+                                    <TableCell sx={{ fontWeight: "bold" }}>Assignee</TableCell>
+                                    <TableCell align="left" sx={{ fontWeight: "bold" }}>Work</TableCell>
+                                    <TableCell align="left" sx={{ fontWeight: "bold" }}>Date Created</TableCell>
+                                    <TableCell align="left" sx={{ fontWeight: "bold" }}>Priority</TableCell>
+                                    <TableCell align="left" sx={{ fontWeight: "bold" }}>Status</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -182,10 +182,10 @@ function DeveloperDashboard() {
                                         sx={{ '&:last-child td, &:last-child th': {border: 0 } }}
                                     >
                                         <TableCell component="th" scope="row">{row.assignee}</TableCell>
-                                        <TableCell align="right">{row.work}</TableCell>
-                                        <TableCell align="right">{row.datecreated}</TableCell>
-                                        <TableCell align="right">{row.priority}</TableCell>
-                                        <TableCell align="right">{row.status}</TableCell>
+                                        <TableCell align="left">{row.work}</TableCell>
+                                        <TableCell align="left">{row.datecreated}</TableCell>
+                                        <TableCell align="left">{row.priority}</TableCell>
+                                        <TableCell align="left">{row.status}</TableCell>
 
                                     </TableRow>
                                 ))}
