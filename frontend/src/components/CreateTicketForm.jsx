@@ -10,12 +10,15 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Box,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
+  const [errorMessage, setErrorMessage] = useState(null);
   const [ticketData, setTicketData] = useState({
     project: '',
     issueType: 'Story',
@@ -25,7 +28,7 @@ function CreateTicketForm() {
     priority: 'Low',
     labels: '',
     sprint: '',
-    storyPoints: '1',
+    storyPoints: 1,
     dueDate: null,
   });
 
@@ -52,7 +55,7 @@ function CreateTicketForm() {
       title: ticketData.summary,
       description: ticketData.description,
       dueDate: ticketData.dueDate?.toISOString() ?? null,
-      assigneeID: ticketData.assignee,
+      assigneeID: ticketData.assignee?.id ?? null,
       priority: ticketData.priority,
       labels: ticketData.labels.split(',').map((l) => l.trim()),
       sprint: ticketData.sprint,
@@ -64,6 +67,7 @@ function CreateTicketForm() {
       await createTicket(payload);
     } catch (err) {
       console.error(err);
+      setErrorMessage(err.message);
     }
   };
 
@@ -79,6 +83,7 @@ function CreateTicketForm() {
 
     if (!res.ok) {
       const data = await res.json();
+      setErrorMessage('Ticket creation failed');
       throw new Error(data.error || 'Ticket creation failed');
     }
 
@@ -89,9 +94,10 @@ function CreateTicketForm() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div>
         <h4>Create New Ticket</h4>
-        <form
+        <Box
+          component="form"
           onSubmit={handleCreateTicketSubmit}
-          style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+          sx={{ display: 'flex', flexDirection: 'column', gap: '2' }}
         >
           <ToggleButtonGroup
             value={ticketData.issueType}
@@ -203,6 +209,13 @@ function CreateTicketForm() {
             <input type="file" hidden />
           </Button>
 
+          <Snackbar
+            open={Boolean(errorMessage)}
+            onClose={() => setErrorMessage(null)}
+          >
+            <Alert severity="error">{errorMessage}</Alert>
+          </Snackbar>
+
           <Button
             type="submit"
             variant="contained"
@@ -210,7 +223,7 @@ function CreateTicketForm() {
           >
             Create Ticket
           </Button>
-        </form>
+        </Box>
       </div>
     </LocalizationProvider>
   );
