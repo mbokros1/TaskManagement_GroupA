@@ -66,28 +66,33 @@ function CreateTicketForm() {
     try {
       await createTicket(payload);
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       setErrorMessage(err.message);
     }
   };
 
   const createTicket = async (payload) => {
-    const res = await fetch(
-      '/api', //per readme the backend is accessible through /api
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+    try {
+      const res = await fetch(
+        '/api', //per readme the backend is accessible through /api
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const data = await res.json();
+        setErrorMessage('Ticket creation failed');
+        throw new Error(data.error || 'Ticket creation failed');
       }
-    );
 
-    if (!res.ok) {
-      const data = await res.json();
-      setErrorMessage('Ticket creation failed');
-      throw new Error(data.error || 'Ticket creation failed');
+      return res.json();
+    } catch (err) {
+      setErrorMessage('Network error while creating ticket');
+      throw new Error(err.message || 'Network error while creating ticket');
     }
-
-    return res.json();
   };
 
   return (
