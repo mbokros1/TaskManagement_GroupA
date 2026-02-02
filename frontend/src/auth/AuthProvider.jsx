@@ -51,7 +51,7 @@ export default function AuthProvider({ children }) {
     }
   }, [isAuthenticated, user, loadingUser, fetchMe, clearUser, hasFetched]);
 
-  const value = useMemo(() => {
+  const authState = useMemo(() => {
     const roles = getRoles(user);
 
     return {
@@ -73,7 +73,9 @@ export default function AuthProvider({ children }) {
     };
   }, [isLoading, isAuthenticated, user, login, logout, fetchMe]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
+  );
 }
 
 AuthProvider.propTypes = {

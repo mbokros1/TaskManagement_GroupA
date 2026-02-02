@@ -44,9 +44,6 @@ function App() {
           </Button>
         </Box>
       )}
-      <Button onClick={login} variant="contained" color="primary">
-        Hello World
-      </Button>
     </div>
   );
 }
