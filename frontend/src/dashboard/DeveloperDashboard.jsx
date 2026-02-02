@@ -24,10 +24,9 @@ function getTodaysDate() {
 }
 
 /**
- * Displays a reusable Stat card for the dashboard that displays a value, title, and subtitle
+ * Displays a reusable Stat card for the dashboard that displays a value and title
  * @param {string|number} value - The main statistic to display
  * @param {string} title - the label or title describing the statistic
- * @param {string|number} subtitle - additional info about the stat
  * @returns A material-UI card
  */
 function StatCard({ value, title }) {
