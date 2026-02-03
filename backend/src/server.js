@@ -3,6 +3,8 @@ import cors from 'cors';
 import { initKeycloak } from './config/keycloak.js';
 import sequelize from './config/db.js';
 import apiRoutes from './routes/api.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.js';
 
 const app = express();
 const port = 5050;
@@ -15,6 +17,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', apiRoutes);
 
 app.use((err, _req, res, _next) => {

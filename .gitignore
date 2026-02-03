@@ -5,6 +5,7 @@ backend/node_modules/
 
 # Docker
 .dockerignore
+docker-compose.override.yml
 
 # IDEs
 .vscode/

@@ -9,6 +9,7 @@ import './index.css';
 import App from './App.jsx';
 import keycloak from './keycloak.js';
 import './api/axios.js';
+import AuthProvider from './auth/AuthProvider.jsx';
 
 setInterval(() => {
   if (keycloak.authenticated) {
@@ -30,16 +31,19 @@ keycloak
   .then(() => {
     createRoot(document.getElementById('root')).render(
       <StrictMode>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<RootLayout />}>
-              <Route index element={<App />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="board" element={<TestBoard />} />
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<RootLayout />}>
+                <Route index element={<App />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="board" element={<TestBoard />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+          <App />
+        </AuthProvider>
       </StrictMode>
     );
   })
