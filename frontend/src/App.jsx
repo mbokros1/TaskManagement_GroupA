@@ -1,6 +1,9 @@
 import './App.css';
 import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import useAuth from './auth/useAuth.js';
+import AdminDashboard from './dashboard/AdminDashboard.jsx';
+import ClinicianDashboard from './dashboard/ClinicianDashboard.jsx';
+import DeveloperDashboard from './dashboard/DeveloperDashboard.jsx';
 
 function App() {
   const { user, isAuthenticated, login, logout, isLoading, roles } = useAuth();
@@ -13,6 +16,26 @@ function App() {
       </Box>
     );
   }
+
+  const displayDashboard = () => {
+    if (!roles || roles.length === 0) {
+      return null;
+    }
+
+    if (roles.includes('admin')) {
+      return <AdminDashboard />;
+    }
+
+    if (roles.includes('clinician')) {
+      return <ClinicianDashboard />;
+    }
+
+    if (roles.includes('developer')) {
+      return <DeveloperDashboard />;
+    }
+
+    return null;
+  };
 
   return (
     <div>
@@ -44,6 +67,9 @@ function App() {
           </Button>
         </Box>
       )}
+
+      {isAuthenticated && displayDashboard()}
+
     </div>
   );
 }
