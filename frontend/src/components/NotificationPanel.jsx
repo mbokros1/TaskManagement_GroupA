@@ -1,9 +1,18 @@
 import { Box, Checkbox, FormControlLabel, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
+/**
+ * A sample Notification Panel that displays the notification list and allows user to mark it as read or unread.
+ * @param {Array<Object>} inputNotifications - The list of notification to display
+ * @returns displays a panel of the notifications
+ */
 function NotificationPanel({inputNotifications}) {
     const [notifications, setNotifcations] = useState(inputNotifications);
 
+    /**
+     * Toggle the notifications as read or unread
+     * @param {number} id - the ID of the notification to toggle
+     */
     const toggleRead = (id) => {
         const updatedNotifications = notifications.map((notif) => {
             if (notif.id === id) {
