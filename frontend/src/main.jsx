@@ -42,7 +42,6 @@ keycloak
               </Route>
             </Routes>
           </BrowserRouter>
-          <App />
         </AuthProvider>
       </StrictMode>
     );
