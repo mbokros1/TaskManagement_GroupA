@@ -1,11 +1,12 @@
 import './App.css';
 import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import useAuth from './auth/useAuth.js';
+import { Routes, Route } from 'react-router-dom';
+import TicketDetail from './pages/TicketDetail.jsx';
 
 function App() {
   const { user, isAuthenticated, login, logout, isLoading, roles } = useAuth();
 
-  //Shows a spinner while AuthProvider is fetching the user profile
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
@@ -33,6 +34,10 @@ function App() {
           >
             Logout
           </Button>
+
+          <Routes>
+            <Route path="/tickets/:id" element={<TicketDetail />} />
+          </Routes>
         </Box>
       ) : (
         <Box>
