@@ -8,23 +8,20 @@ import { Card, CardContent, Typography } from '@mui/material';
  * @returns A material-UI card
  */
 function StatCard({ value, title, subtitle }) {
-    return(
-        <Card sx={{ display: "flex", flexDirection: "column", width:300 }}>
-            <CardContent>
-                <Typography variant="h5" fontWeight="bold">
-                    {value}
-                </Typography>
+  return (
+    <Card sx={{ display: 'flex', flexDirection: 'column', width: 300 }}>
+      <CardContent>
+        <Typography variant="h5" fontWeight="bold">
+          {value}
+        </Typography>
 
-                <Typography>
-                    {title}
-                </Typography>
+        <Typography>{title}</Typography>
 
-                {/* Optional parameter */}
-                {subtitle && <Typography>{subtitle}</Typography>}
-
-            </CardContent>
-        </Card>
-    );
+        {/* Optional parameter */}
+        {subtitle && <Typography>{subtitle}</Typography>}
+      </CardContent>
+    </Card>
+  );
 }
 
 export default StatCard;

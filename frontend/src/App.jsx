@@ -7,7 +7,7 @@ import ClinicianDashboard from './dashboard/ClinicianDashboard.jsx';
 import DeveloperDashboard from './dashboard/DeveloperDashboard.jsx';
 
 function App() {
-  const { user, isAuthenticated, login, logout, isLoading, roles} = useAuth();
+  const { user, isAuthenticated, login, logout, isLoading, roles } = useAuth();
   const roleskc = keycloak?.tokenParsed?.realm_access?.roles || [];
 
   //Shows a spinner while AuthProvider is fetching the user profile
@@ -65,7 +65,8 @@ function App() {
             Welcome, <strong>{user?.name || 'User'}</strong>!
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Roles: {roleskc.length > 0 ? roleskc.join(', ') : 'No roles assigned'}
+            Roles:{' '}
+            {roleskc.length > 0 ? roleskc.join(', ') : 'No roles assigned'}
           </Typography>
 
           <Button
