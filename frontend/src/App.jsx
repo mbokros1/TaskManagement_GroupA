@@ -7,8 +7,8 @@ import ClinicianDashboard from './dashboard/ClinicianDashboard.jsx';
 import DeveloperDashboard from './dashboard/DeveloperDashboard.jsx';
 
 function App() {
-  const { user, isAuthenticated, login, logout, isLoading } = useAuth();
-  const roles = keycloak?.tokenParsed?.realm_access?.roles || [];
+  const { user, isAuthenticated, login, logout, isLoading, roles} = useAuth();
+  const roleskc = keycloak?.tokenParsed?.realm_access?.roles || [];
 
   //Shows a spinner while AuthProvider is fetching the user profile
   if (isLoading) {
@@ -20,7 +20,7 @@ function App() {
   }
 
   const displayDashboard = () => {
-    if (!roles || roles.length === 0) {
+    if (!roleskc || roleskc.length === 0) {
       return (
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <CircularProgress size={18} />
@@ -29,13 +29,13 @@ function App() {
       );
     }
 
-    if (roles.includes('admin')) {
+    if (roleskc.includes('admin')) {
       return <AdminDashboard />;
     }
-    if (roles.includes('clinician')) {
+    if (roleskc.includes('clinician')) {
       return <ClinicianDashboard />;
     }
-    if (roles.includes('developer')) {
+    if (roleskc.includes('developer')) {
       return <DeveloperDashboard />;
     }
 
@@ -65,7 +65,7 @@ function App() {
             Welcome, <strong>{user?.name || 'User'}</strong>!
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Roles: {roles.length > 0 ? roles.join(', ') : 'No roles assigned'}
+            Roles: {roleskc.length > 0 ? roleskc.join(', ') : 'No roles assigned'}
           </Typography>
 
           <Button
