@@ -25,7 +25,7 @@ function StatCard({ value, title, subtitle }) {
   );
 }
 
-StatCard.PropTypes = {
+StatCard.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
