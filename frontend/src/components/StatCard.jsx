@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
 /**
  * Displays a reusable Stat card for the dashboard that displays a value, title, and subtitle
@@ -23,5 +24,11 @@ function StatCard({ value, title, subtitle }) {
     </Card>
   );
 }
+
+StatCard.PropTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
 
 export default StatCard;

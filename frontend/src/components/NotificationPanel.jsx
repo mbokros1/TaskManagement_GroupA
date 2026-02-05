@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * A sample Notification Panel that displays the notification list and allows user to mark it as read or unread.
@@ -65,5 +66,15 @@ function NotificationPanel({ inputNotifications }) {
     </Box>
   );
 }
+
+NotificationPanel.propTypes = {
+  inputNotifications:PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      message: PropTypes.string.isRequired,
+      read: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+};
 
 export default NotificationPanel;
