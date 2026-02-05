@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
  * @param {object} props - component props
  * @param {React.ReactNode} children - The content to display inside the tab panel, needs value === index.
  * @param {number} value - The index of the current selected tab
- * @param {number} index - The tab index the panel is linked to. THe panel is shown when the selected tab index matches this value, value === index.
+ * @param {number} index - The tab index the panel is linked to. The panel is shown when the selected tab index matches this value, value === index.
  * @param {object} other - Additional props passed to the root element.
  * @returns {JSX.Element|null} the tab panel if active and null if not active.
  */
