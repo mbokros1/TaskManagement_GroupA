@@ -68,7 +68,7 @@ function NotificationPanel({ inputNotifications }) {
 }
 
 NotificationPanel.propTypes = {
-  inputNotifications:PropTypes.arrayOf(
+  inputNotifications: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       message: PropTypes.string.isRequired,
