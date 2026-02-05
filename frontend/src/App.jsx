@@ -7,13 +7,7 @@ import ClinicianDashboard from './dashboard/ClinicianDashboard.jsx';
 import DeveloperDashboard from './dashboard/DeveloperDashboard.jsx';
 
 function App() {
-  const {
-    user,
-    isAuthenticated,
-    login,
-    logout,
-    isLoading
-  } = useAuth();
+  const { user, isAuthenticated, login, logout, isLoading } = useAuth();
   const roleskc = keycloak?.tokenParsed?.realm_access?.roles || [];
 
   //Shows a spinner while AuthProvider is fetching the user profile
