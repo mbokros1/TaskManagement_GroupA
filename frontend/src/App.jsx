@@ -12,8 +12,7 @@ function App() {
     isAuthenticated,
     login,
     logout,
-    isLoading,
-    roles: _roles,
+    isLoading
   } = useAuth();
   const roleskc = keycloak?.tokenParsed?.realm_access?.roles || [];
 
