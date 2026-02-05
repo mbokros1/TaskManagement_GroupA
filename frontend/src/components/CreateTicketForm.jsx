@@ -73,14 +73,11 @@ function CreateTicketForm() {
 
   const createTicket = async (payload) => {
     try {
-      const res = await fetch(
-        '/api/tickets', //per readme the backend is accessible through /api
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch('/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
       if (!res.ok) {
         const data = await res.json();
