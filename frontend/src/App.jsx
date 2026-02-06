@@ -10,8 +10,6 @@ function App() {
   const { user, isAuthenticated, login, logout, isLoading, roles } = useAuth();
   //const roles = keycloak?.tokenParsed?.realm_access?.roles || [];
 
-
-
   //Shows a spinner while AuthProvider is fetching the user profile
   if (isLoading) {
     return (
@@ -67,8 +65,7 @@ function App() {
             Welcome, <strong>{user?.name || 'User'}</strong>!
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Roles:{' '}
-            {roles.length > 0 ? roles.join(', ') : 'No roles assigned'}
+            Roles: {roles.length > 0 ? roles.join(', ') : 'No roles assigned'}
           </Typography>
 
           <Button
