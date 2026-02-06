@@ -99,7 +99,7 @@ function CreateTicketForm() {
         <Box
           component="form"
           onSubmit={handleCreateTicketSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: '2' }}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <ToggleButtonGroup
             value={ticketData.issueType}
