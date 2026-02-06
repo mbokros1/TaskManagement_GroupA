@@ -33,6 +33,7 @@ function CreateTicketForm() {
   });
 
   const users = [];
+  const projects = [];
   const issueTypes = [
     { value: 'Story', color: 'lightblue' },
     { value: 'Bug', color: 'coral' },
@@ -101,6 +102,13 @@ function CreateTicketForm() {
           onSubmit={handleCreateTicketSubmit}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
+          <Autocomplete
+            options={projects}
+            label="Project:"
+            value={ticketData.project}
+            onChange={(e, newValue) => handleChange('project')(newValue)}
+            renderInput={(params) => <TextField {...params} label="Project" />}
+          />
           <ToggleButtonGroup
             value={ticketData.issueType}
             exclusive
