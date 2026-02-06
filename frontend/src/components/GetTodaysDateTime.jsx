@@ -27,7 +27,7 @@ function GetTodaysDateTime() {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hor12: true,
+        hour12: true,
       })}
     </Typography>
   );

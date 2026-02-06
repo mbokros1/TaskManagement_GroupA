@@ -1,10 +1,3 @@
-/**
- * Component that displays the Clinician Dashboard
- *
- * @author Jovy Ann Nelson
- * @date 01-26-2026
- */
-
 import {
   Box,
   Button,

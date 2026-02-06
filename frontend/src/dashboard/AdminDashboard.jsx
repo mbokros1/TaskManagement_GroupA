@@ -1,10 +1,3 @@
-/**
- * Component that displays the Admin Dashboard
- *
- * @author Jovy Ann Nelson
- * @date 01-26-2026
- */
-
 import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 import StatCard from '../components/StatCard';

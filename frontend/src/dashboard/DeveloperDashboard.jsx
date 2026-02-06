@@ -1,10 +1,3 @@
-/**
- * Component that displays the VR Developer Dashboard
- *
- * @author Jovy Ann Nelson
- * @date 01-26-2026
- */
-
 import {
   Box,
   Button,
@@ -24,12 +17,12 @@ import NotificationPanel from '../components/NotificationPanel';
 
 /**
  * Displays a sample Workload Table information
- * @param {*} assignee
- * @param {*} work
- * @param {*} datecreated
- * @param {*} priority
- * @param {*} status
- * @returns
+ * @param {*} assignee - The person assigned to the task
+ * @param {*} work - The description of the task
+ * @param {*} datecreated - (YYYY-MM-DD) The date the task was created
+ * @param {*} priority - The task's priority level
+ * @param {*} status - The task current status
+ * @returns {Object} A workload object containing assignee, work, datecreated, priority, and status.
  */
 function createSampleData(assignee, work, datecreated, priority, status) {
   return { assignee, work, datecreated, priority, status };
@@ -160,7 +153,7 @@ function DeveloperDashboard() {
             Team Workload
           </Typography>
           <TableContainer component={Paper}>
-            <Table aria-lable="My ticket table">
+            <Table aria-label="My ticket table">
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Assignee</TableCell>
@@ -181,7 +174,7 @@ function DeveloperDashboard() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.assignee}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
