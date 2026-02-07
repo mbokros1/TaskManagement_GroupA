@@ -14,7 +14,6 @@ import {
   Add as AddIcon,
   FilterList as FilterIcon,
   Person as PersonIcon,
-  KeyboardArrowDown as ArrowDownIcon,
   EditOutlined as EditIcon,
   Circle as CircleIcon,
   Pentagon as PentagonIcon,
@@ -25,7 +24,6 @@ import {
   columns,
   boardInfo,
   TASK_TYPES,
-  STATUSES,
 } from '../data/mockBoardData.js';
 
 // Custom rhombus icon for subtasks
