@@ -1,4 +1,5 @@
 import './App.css';
+
 import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import useAuth from './auth/useAuth.js';
 import BoardPage from './pages/BoardPage.jsx';
