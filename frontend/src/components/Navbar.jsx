@@ -12,24 +12,13 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
+import useAuth from '../auth/useAuth';
 import keycloak from '../keycloak';
 
 export default function Navbar() {
-  const [userInfo, setUserInfo] = useState();
-
-  useEffect(() => {
-    if (keycloak.authenticated) {
-      keycloak
-        .loadUserInfo()
-        .then((userInfo) => {
-          setUserInfo(userInfo);
-        })
-        .catch((err) => console.error(err));
-    }
-  }, [keycloak]);
+  const { user } = useAuth();
 
   const [yourWorkAnchor, setYourWorkAnchor] = useState(null);
   const [projectsAnchor, setProjectsAnchor] = useState(null);
@@ -62,6 +51,8 @@ export default function Navbar() {
               gap: 1,
               height: '100%',
             }}
+            component={Link}
+            to="/"
           >
             <Box
               sx={{
@@ -73,17 +64,22 @@ export default function Navbar() {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              component={Link}
-              to="/"
             >
               <Box
                 component="span"
-                sx={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}
+                sx={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                }}
               >
                 J
               </Box>
             </Box>
-            <Box component="span" sx={{ fontWeight: 600, fontSize: 20 }}>
+            <Box
+              component="span"
+              sx={{ color: 'black', fontWeight: 600, fontSize: 20 }}
+            >
               Jiro
             </Box>
           </Box>
@@ -98,9 +94,13 @@ export default function Navbar() {
               }}
             >
               <Button
+                disabled
                 endIcon={<KeyboardArrowDown />}
                 onClick={(e) => setYourWorkAnchor(e.currentTarget)}
-                sx={{ color: 'text.primary', textTransform: 'none' }}
+                sx={{
+                  color: 'text.primary',
+                  textTransform: 'none',
+                }}
               >
                 Your work
               </Button>
@@ -124,9 +124,13 @@ export default function Navbar() {
               </Menu>
 
               <Button
+                disabled
                 endIcon={<KeyboardArrowDown />}
                 onClick={(e) => setProjectsAnchor(e.currentTarget)}
-                sx={{ color: 'text.primary', textTransform: 'none' }}
+                sx={{
+                  color: 'text.primary',
+                  textTransform: 'none',
+                }}
               >
                 Projects
               </Button>
@@ -149,9 +153,13 @@ export default function Navbar() {
               </Menu>
 
               <Button
+                disabled
                 endIcon={<KeyboardArrowDown />}
                 onClick={(e) => setFiltersAnchor(e.currentTarget)}
-                sx={{ color: 'text.primary', textTransform: 'none' }}
+                sx={{
+                  color: 'text.primary',
+                  textTransform: 'none',
+                }}
               >
                 Filters
               </Button>
@@ -169,9 +177,13 @@ export default function Navbar() {
               </Menu>
 
               <Button
+                disabled
                 endIcon={<KeyboardArrowDown />}
                 onClick={(e) => setDashboardsAnchor(e.currentTarget)}
-                sx={{ color: 'text.primary', textTransform: 'none' }}
+                sx={{
+                  color: 'text.primary',
+                  textTransform: 'none',
+                }}
               >
                 Dashboards
               </Button>
@@ -193,7 +205,13 @@ export default function Navbar() {
                 </MenuItem>
               </Menu>
 
-              <Button sx={{ color: 'text.primary', textTransform: 'none' }}>
+              <Button
+                disabled
+                sx={{
+                  color: 'text.primary',
+                  textTransform: 'none',
+                }}
+              >
                 Teams
               </Button>
             </Box>
@@ -204,6 +222,7 @@ export default function Navbar() {
           {keycloak.authenticated && (
             <>
               <Button
+                disabled
                 variant="contained"
                 startIcon={<Add />}
                 sx={{
@@ -214,7 +233,7 @@ export default function Navbar() {
                 Create
               </Button>
 
-              <IconButton>
+              <IconButton disabled>
                 <Badge badgeContent=" " color="primary" variant="dot">
                   <Notifications />
                 </Badge>
@@ -264,15 +283,18 @@ export default function Navbar() {
                     to="/profile"
                   />
                   <Typography variant="h5" textAlign="center">
-                    {userInfo ? userInfo.name : ''}
+                    {user?.name}
                   </Typography>
                   <Typography variant="body1" textAlign="center">
-                    {userInfo ? userInfo.email : ''}
+                    {user?.email}
                   </Typography>
                 </Box>
                 <MenuItem
-                  component="a"
-                  href={`${import.meta.env.VITE_KEYCLOAK_URL}/realms/taskmanager/account`}
+                  onClick={() => {
+                    window.location.replace(
+                      `${import.meta.env.VITE_KEYCLOAK_URL}/realms/taskmanager/account`
+                    );
+                  }}
                 >
                   Account settings
                 </MenuItem>
