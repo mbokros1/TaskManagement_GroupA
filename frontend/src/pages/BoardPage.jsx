@@ -233,45 +233,6 @@ export default function BoardPage() {
         marginLeft: 'calc(-50vw + 50%)',
       }}
     >
-      {/* Header with Logo and User */}
-      <Box
-        sx={{
-          bgcolor: 'white',
-          borderBottom: '1px solid #e0e0e0',
-          px: 3,
-          py: 1.5,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 'bold', letterSpacing: 1, color: '#333' }}
-        >
-          LOGO
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            px: 1.5,
-            py: 0.75,
-            borderRadius: 1,
-            cursor: 'pointer',
-            '&:hover': {
-              bgcolor: '#f0f0f0',
-            },
-          }}
-        >
-          <PersonIcon sx={{ color: '#666' }} />
-          <Typography variant="body2" color="text.secondary">
-            Name
-          </Typography>
-          <ArrowDownIcon sx={{ color: '#666', fontSize: 18 }} />
-        </Box>
-      </Box>
 
       {/* Main Content */}
       <Box
