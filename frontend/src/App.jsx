@@ -1,6 +1,7 @@
 import './App.css';
 import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import useAuth from './auth/useAuth.js';
+import BoardPage from './pages/BoardPage.jsx';
 
 function App() {
   const { user, isAuthenticated, login, logout, isLoading, roles } = useAuth();
@@ -44,6 +45,7 @@ function App() {
           </Button>
         </Box>
       )}
+      <BoardPage />
     </div>
   );
 }
