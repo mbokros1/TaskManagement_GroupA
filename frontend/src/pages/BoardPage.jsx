@@ -89,8 +89,18 @@ function TaskCard({ task }) {
       }}
     >
       {/* Title and Edit Icon */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 500, color: '#333', pr: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          mb: 1,
+        }}
+      >
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: 500, color: '#333', pr: 1 }}
+        >
           {task.title}
         </Typography>
         <IconButton size="small" sx={{ color: '#ccc', p: 0.25 }}>
@@ -121,7 +131,13 @@ function TaskCard({ task }) {
       </Typography>
 
       {/* Footer: Task ID, Story Points, Assignee */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         {/* Task Type Icon and ID */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           {getTaskTypeIcon(task.type)}
@@ -145,7 +161,10 @@ function TaskCard({ task }) {
               justifyContent: 'center',
             }}
           >
-            <Typography variant="caption" sx={{ fontWeight: 500, color: '#555', fontSize: '0.65rem' }}>
+            <Typography
+              variant="caption"
+              sx={{ fontWeight: 500, color: '#555', fontSize: '0.65rem' }}
+            >
               {task.storyPoints}
             </Typography>
           </Box>
@@ -190,7 +209,10 @@ function Column({ column, tasks }) {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 500, color: '#333' }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 500, color: '#333' }}
+          >
             {column.title}
           </Typography>
           <Typography variant="caption" sx={{ color: '#888' }}>
@@ -233,7 +255,6 @@ export default function BoardPage() {
         marginLeft: 'calc(-50vw + 50%)',
       }}
     >
-
       {/* Main Content */}
       <Box
         sx={{
@@ -254,7 +275,10 @@ export default function BoardPage() {
         >
           {/* Title and Date */}
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 400, color: '#333', mb: 0.5 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 400, color: '#333', mb: 0.5 }}
+            >
               {boardInfo.title}
             </Typography>
             <Typography variant="body2" sx={{ color: '#888' }}>

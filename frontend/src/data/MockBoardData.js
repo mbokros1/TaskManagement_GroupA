@@ -1,7 +1,7 @@
 // Task types for hierarchy distinction
 export const TASK_TYPES = {
-  EPIC: 'epic',       // Magenta circle
-  STORY: 'story',     // Cyan pentagon
+  EPIC: 'epic', // Magenta circle
+  STORY: 'story', // Cyan pentagon
   SUBTASK: 'subtask', // Yellow rhombus
 };
 
@@ -33,7 +33,8 @@ export const tasks = [
   {
     id: 'VAB-29',
     title: 'Haptic Feedback Prototyping',
-    description: 'Developing tactile response patterns for interaction controllers and sensory modules.',
+    description:
+      'Developing tactile response patterns for interaction controllers and sensory modules.',
     type: TASK_TYPES.EPIC,
     storyPoints: 8,
     status: STATUSES.TODO,
@@ -42,7 +43,8 @@ export const tasks = [
   {
     id: 'VAB-31',
     title: 'Gaze-based Navigation',
-    description: 'Implementing eye-tracking interaction models for menu traversal and object selection.',
+    description:
+      'Implementing eye-tracking interaction models for menu traversal and object selection.',
     type: TASK_TYPES.STORY,
     storyPoints: 5,
     status: STATUSES.TODO,
@@ -51,7 +53,8 @@ export const tasks = [
   {
     id: 'VAB-08',
     title: 'Field of View Optimization',
-    description: 'Fine-tuning render distances and peripheral visibility settings for optimal performance.',
+    description:
+      'Fine-tuning render distances and peripheral visibility settings for optimal performance.',
     type: TASK_TYPES.SUBTASK,
     storyPoints: 3,
     status: STATUSES.TODO,
@@ -60,7 +63,8 @@ export const tasks = [
   {
     id: 'VAB-22',
     title: 'Guardian System Bounds',
-    description: 'Validating safety perimeter rendering and collision detection for room-scale experiences.',
+    description:
+      'Validating safety perimeter rendering and collision detection for room-scale experiences.',
     type: TASK_TYPES.STORY,
     storyPoints: 5,
     status: STATUSES.TODO,
@@ -71,7 +75,8 @@ export const tasks = [
   {
     id: 'VAB-12',
     title: 'Spatial Audio Integration',
-    description: 'Implementing immersive soundscapes and directional audio positioning for virtual environments.',
+    description:
+      'Implementing immersive soundscapes and directional audio positioning for virtual environments.',
     type: TASK_TYPES.STORY,
     storyPoints: 5,
     status: STATUSES.IN_PROGRESS,
@@ -80,7 +85,8 @@ export const tasks = [
   {
     id: 'VAB-15',
     title: 'Stereoscopic Pipeline',
-    description: 'Optimizing dual-camera rendering pass for consistent high-framerate depth perception.',
+    description:
+      'Optimizing dual-camera rendering pass for consistent high-framerate depth perception.',
     type: TASK_TYPES.EPIC,
     storyPoints: 13,
     status: STATUSES.IN_PROGRESS,
@@ -91,7 +97,8 @@ export const tasks = [
   {
     id: 'VAB-45',
     title: 'Tracking Calibration',
-    description: 'Aligning external sensor inputs with virtual coordinate systems for accurate motion.',
+    description:
+      'Aligning external sensor inputs with virtual coordinate systems for accurate motion.',
     type: TASK_TYPES.EPIC,
     storyPoints: 13,
     status: STATUSES.IN_REVIEW,
@@ -102,7 +109,8 @@ export const tasks = [
   {
     id: 'VAB-05',
     title: 'Shader Pre-caching',
-    description: 'Compiling core material shaders at startup to prevent frame-stutter during gameplay.',
+    description:
+      'Compiling core material shaders at startup to prevent frame-stutter during gameplay.',
     type: TASK_TYPES.SUBTASK,
     storyPoints: 2,
     status: STATUSES.DONE,
