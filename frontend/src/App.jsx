@@ -86,7 +86,6 @@ function App() {
           </Button>
         </Box>
       )}
-      <AdminDashboard />
 
       {isAuthenticated && displayDashboard()}
     </div>
