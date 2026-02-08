@@ -96,7 +96,7 @@ function TaskCard({ task }) {
         }}
       >
         <Typography
-          variant="subtitle2"
+          variant="body1"
           sx={{ fontWeight: 500, color: '#333', pr: 1 }}
         >
           {task.title}
@@ -208,7 +208,7 @@ function Column({ column, tasks }) {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography
-            variant="subtitle2"
+            variant="body1"
             sx={{ fontWeight: 500, color: '#333' }}
           >
             {column.title}
