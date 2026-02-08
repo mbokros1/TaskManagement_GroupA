@@ -2,8 +2,7 @@ import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 import StatCard from '../components/StatCard';
 import CustomTabPanel from '../components/CustomTabPanel';
-import GetTodaysDateTime from '../components/GetTodaysDateTime';
-
+import GetTodaysDate from '../components/GetTodaysDate';
 /**
  * Function to implement accessible tabs following WAI-ARIA Authoring Practices.
  * @param {number} index the index of the tab
@@ -38,7 +37,7 @@ function AdminDashboard() {
             <Typography variant="h5" fontWeight="bold">
               Admin Dashboard
             </Typography>
-            <GetTodaysDateTime />
+            <GetTodaysDate />
           </Box>
           <Button variant="contained">+ Add User</Button>
         </Box>

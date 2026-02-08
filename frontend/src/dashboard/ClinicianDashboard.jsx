@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import StatCard from '../components/StatCard';
 import NotificationPanel from '../components/NotificationPanel';
-import GetTodaysDateTime from '../components/GetTodaysDateTime';
+import GetTodaysDate from '../components/GetTodaysDate';
 
 /**
  * Displays a Sample Ticket table information
@@ -88,7 +88,7 @@ function ClinicianDashboard() {
             <Typography variant="h5" fontWeight="bold">
               Clinician Dashboard
             </Typography>
-            <GetTodaysDateTime />
+            <GetTodaysDate />
           </Box>
           <Button variant="contained">+ Create Ticket</Button>
         </Box>

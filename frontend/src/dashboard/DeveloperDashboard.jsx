@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import StatCard from '../components/StatCard';
-import GetTodaysDateTime from '../components/GetTodaysDateTime';
+import GetTodaysDate from '../components/GetTodaysDate';
 import NotificationPanel from '../components/NotificationPanel';
 
 /**
@@ -88,7 +88,7 @@ function DeveloperDashboard() {
             <Typography variant="h5" fontWeight="bold">
               VR Developer Dashboard
             </Typography>
-            <GetTodaysDateTime />
+            <GetTodaysDate />
           </Box>
           <Box>
             <Button variant="contained" sx={{ mr: 1, mb: 1 }}>
