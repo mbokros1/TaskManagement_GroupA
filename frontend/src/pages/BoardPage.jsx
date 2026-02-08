@@ -207,10 +207,7 @@ function Column({ column, tasks }) {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 500, color: '#333' }}
-          >
+          <Typography variant="body1" sx={{ fontWeight: 500, color: '#333' }}>
             {column.title}
           </Typography>
           <Typography variant="caption" sx={{ color: '#888' }}>
