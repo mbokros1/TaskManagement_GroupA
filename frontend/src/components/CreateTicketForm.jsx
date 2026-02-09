@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   TextField,
   Autocomplete,
@@ -19,12 +19,17 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
   const [errorMessage, setErrorMessage] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [userInput, setUserInput] = useState('');
+  const [projectInput, setProjectInput] = useState('');
+
   const [ticketData, setTicketData] = useState({
-    project: '',
+    project: null,
     issueType: 'Story',
     summary: '',
     description: '',
-    assignee: '',
+    assignee: null,
     priority: 'Low',
     labels: '',
     sprint: '',
@@ -32,8 +37,41 @@ function CreateTicketForm() {
     dueDate: null,
   });
 
-  const users = [];
-  const projects = [];
+  useEffect(() => {
+    if (!userInput) return;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      fetch(`/api/users?search=${encodeURIComponent(userInput)}`, {
+        // double check users endpoint
+        signal: controller.signal,
+      })
+        .then((res) => res.json())
+        .then(setUsers)
+        .catch((err) => {
+          if (err.name !== 'AbortError') console.error(err);
+        });
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [userInput]);
+
+  useEffect(() => {
+    if (!projectInput) return;
+    const timeout = setTimeout(() => {
+      fetch(`/api/projects?search=${encodeURIComponent(projectInput)}`) // double check projects route
+        .then((res) => res.json())
+        .then((data) => setProjects(data))
+        .catch(console.error);
+    }, 300);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [projectInput]);
+
   const issueTypes = [
     { value: 'Story', color: 'lightblue' },
     { value: 'Bug', color: 'coral' },
@@ -51,7 +89,7 @@ function CreateTicketForm() {
   const handleCreateTicketSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      project: ticketData.project,
+      project: ticketData.project?.id ?? null,
       issueType: ticketData.issueType,
       title: ticketData.summary,
       description: ticketData.description,
@@ -104,9 +142,14 @@ function CreateTicketForm() {
         >
           <Autocomplete
             options={projects}
-            label="Project:"
+            getOptionLabel={(option) => option.name ?? ''}
             value={ticketData.project}
-            onChange={(e, newValue) => handleChange('project')(newValue)}
+            onChange={(event, newValue) => {
+              handleChange('project')(newValue);
+            }}
+            onInputChange={(event, newInputValue) => {
+              setProjectInput(newInputValue);
+            }}
             renderInput={(params) => <TextField {...params} label="Project" />}
           />
           <ToggleButtonGroup
@@ -165,9 +208,14 @@ function CreateTicketForm() {
           />
           <Autocomplete
             options={users}
-            label="Assigned To:"
+            getOptionLabel={(option) => option.name}
             value={ticketData.assignee}
-            onChange={(e, newValue) => handleChange('assignee')(newValue)}
+            onChange={(event, newValue) => {
+              handleChange('assignee')(newValue);
+            }}
+            onInputChange={(event, newInputValue) => {
+              setUserInput(newInputValue);
+            }}
             renderInput={(params) => <TextField {...params} label="Assignee" />}
           />
           <FormControl fullWidth>
