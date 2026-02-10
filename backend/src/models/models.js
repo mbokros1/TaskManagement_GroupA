@@ -56,12 +56,12 @@ const Issue = sequelize.define('Issue', {
 }, {
   timestamps: true,
   indexes: [
-        { fields: ['reporter_id'] },
-        { fields: ['status'] },
-        { fields: ['type'] },
-        { fields: ['priority'] },
-        { fields: ['parent_issue_id'] },
-      ],
+    { fields: ['reporterId'] },
+    { fields: ['status'] },
+    { fields: ['type'] },
+    { fields: ['priority'] },
+    { fields: ['parentIssueId'] },
+  ],
 });
 
 const IssueAssignee = sequelize.define('IssueAssignee', {
@@ -99,6 +99,4 @@ User.belongsToMany(Issue, {
 Issue.belongsTo(Issue, { as: 'parent', foreignKey: 'parentIssueId' });
 Issue.hasMany(Issue, { as: 'subIssues', foreignKey: 'parentIssueId' });
 
-await sequelize.sync();
-
-export { User, Issue, IssueAssignee};
+export { User, Issue, IssueAssignee };
