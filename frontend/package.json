@@ -16,9 +16,11 @@
     "@mui/material": "^7.3.7",
     "axios": "^1.13.2",
     "keycloak-js": "^26.2.2",
+    "oidc-client-ts": "^3.4.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.12.0"
+    "react-oidc-context": "^3.3.0",
+    "react-router": "^7.13.0"
   },
   "devDependencies": {
     "@eslint/css": "^0.14.1",
