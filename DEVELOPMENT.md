@@ -10,9 +10,15 @@ Task Management System for Team A - NSC
 ## Development Setup
 
 1. Clone the repo
-2. Run `npm run install-all` in the root to install dependencies
+2. Run `npm run install:all` in the root to install dependencies
 3. Run `npm run docker:up` to build and start frontend/backend/db containers
 4. Access the frontend at `http://localhost:5173`
+
+## Tips
+
+- When reviewing PRs or checking out branches, ensure you run `npm run docker:down` first to clear any state you have and to force each container to reinstall all npm packages.
+
+- Whenever you make changes to any keycloak realm/client/user configuration and want it to persist - run `npm run keycloak-save-config` to export out the changes into `keycloak-config` to be used on `npm run docker:up`.
 
 ## Routing
 
