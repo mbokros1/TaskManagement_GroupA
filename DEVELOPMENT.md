@@ -21,11 +21,11 @@ Task Management System for Team A - NSC
 
 ## Test accounts
 
-| Username       | Password |
-| -------------- | -------- |
-| testadmin      | admin    |
-| testdeveloper  | admin    |
-| testclinician  | admin    |
+| Username      | Password |
+| ------------- | -------- |
+| testadmin     | admin    |
+| testdeveloper | admin    |
+| testclinician | admin    |
 
 ## Routing
 
