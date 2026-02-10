@@ -10,9 +10,14 @@ Task Management System for Team A - NSC
 ## Development Setup
 
 1. Clone the repo
-2. Run `npm run install-all` in the root to install dependencies
+2. Run `npm run install:all` in the root to install dependencies
 3. Run `npm run docker:up` to build and start frontend/backend/db containers
 4. Access the frontend at `http://localhost:5173`
+
+##Test accounts
+testadmin / admin
+testdeveloper / admin
+testclinician / admin
 
 ## Routing
 
