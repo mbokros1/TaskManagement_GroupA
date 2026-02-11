@@ -135,7 +135,8 @@ export default function TaskCard({ task }) {
         {/* Story Points, Nesting Icon, and Assignee */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <StoryPoints points={task.storyPoints} />
-          {(task.type === TASK_TYPES.EPIC || task.type === TASK_TYPES.STORY) && (
+          {(task.type === TASK_TYPES.EPIC ||
+            task.type === TASK_TYPES.STORY) && (
             <NestingIcon sx={{ fontSize: 16, color: '#ccc' }} />
           )}
           <Assignee name={task.assignee} />
