@@ -244,7 +244,7 @@ export default function BoardPage() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        height: '100%',
         bgcolor: '#fafafa',
         width: '100vw',
         marginLeft: 'calc(-50vw + 50%)',
