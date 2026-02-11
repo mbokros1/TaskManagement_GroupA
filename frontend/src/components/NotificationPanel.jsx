@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
  * @returns displays a panel of the notifications
  */
 function NotificationPanel({ inputNotifications }) {
-  const [notifications, setNotifcations] = useState(inputNotifications);
+  const [notifications, setNotifications] = useState(inputNotifications);
 
   /**
    * Toggle the notifications as read or unread
@@ -29,7 +29,7 @@ function NotificationPanel({ inputNotifications }) {
       return notif;
     });
 
-    setNotifcations(updatedNotifications);
+    setNotifications(updatedNotifications);
   };
 
   return (
@@ -49,7 +49,7 @@ function NotificationPanel({ inputNotifications }) {
         {notifications.map((notif) => (
           <Paper
             key={notif.id}
-            sx={{ p: 2, display: 'flex', alignItems: 'left' }}
+            sx={{ p: 2, display: 'flex', alignItems: 'flex-start' }}
           >
             <FormControlLabel
               control={
