@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { initKeycloak } from './config/keycloak.js';
 import sequelize from './config/db.js';
+import './models/models.js';
 import apiRoutes from './routes/api.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
@@ -33,6 +34,8 @@ async function startServer() {
 
     if (process.env.NODE_ENV === 'development') {
       await sequelize.sync({ alter: true });
+    } else {
+      await sequelize.sync();
     }
 
     app.listen(port, () => {
