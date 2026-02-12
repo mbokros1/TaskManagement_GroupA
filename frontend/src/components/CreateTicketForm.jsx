@@ -12,17 +12,27 @@ import {
   Box,
   Snackbar,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-function CreateTicketForm() {
+// ADD: Accept props for edit mode
+function CreateTicketForm({ ticketId = null, mode = 'create', onSuccess = () => {} }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [projectInput, setProjectInput] = useState('');
+  
+  // ADD: Delete confirmation dialog
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [ticketData, setTicketData] = useState({
     project: null,
@@ -37,13 +47,41 @@ function CreateTicketForm() {
     dueDate: null,
   });
 
+  // ADD: Load ticket data if in edit mode
+  useEffect(() => {
+    if (mode === 'edit' && ticketId) {
+      fetch(`/api/tickets/${ticketId}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load ticket');
+          return res.json();
+        })
+        .then(data => {
+          setTicketData({
+            project: data.project || null,
+            issueType: data.issueType || 'Story',
+            summary: data.title || '',
+            description: data.description || '',
+            assignee: data.assignee || null,
+            priority: data.priority || 'Low',
+            labels: data.labels ? data.labels.join(', ') : '',
+            sprint: data.sprint || '',
+            storyPoints: data.storyPoints || 1,
+            dueDate: data.dueDate ? dayjs(data.dueDate) : null,
+          });
+        })
+        .catch(err => {
+          console.error('Failed to load ticket:', err);
+          setErrorMessage('Failed to load ticket data');
+        });
+    }
+  }, [ticketId, mode]);
+
   useEffect(() => {
     if (!userInput) return;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       fetch(`/api/users?search=${encodeURIComponent(userInput)}`, {
-        // double check users endpoint
         signal: controller.signal,
       })
         .then((res) => res.json())
@@ -62,7 +100,7 @@ function CreateTicketForm() {
   useEffect(() => {
     if (!projectInput) return;
     const timeout = setTimeout(() => {
-      fetch(`/api/projects?search=${encodeURIComponent(projectInput)}`) // double check projects route
+      fetch(`/api/projects?search=${encodeURIComponent(projectInput)}`)
         .then((res) => res.json())
         .then((data) => setProjects(data))
         .catch(console.error);
@@ -86,7 +124,8 @@ function CreateTicketForm() {
     }));
   };
 
-  const handleCreateTicketSubmit = async (e) => {
+  // MODIFY: Handle both create and update
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
       project: ticketData.project?.id ?? null,
@@ -96,50 +135,100 @@ function CreateTicketForm() {
       dueDate: ticketData.dueDate?.toISOString() ?? null,
       assigneeID: ticketData.assignee?.id ?? null,
       priority: ticketData.priority,
-      labels: ticketData.labels.split(',').map((l) => l.trim()),
+      labels: ticketData.labels.split(',').map((l) => l.trim()).filter(l => l),
       sprint: ticketData.sprint,
       storyPoints: ticketData.storyPoints,
     };
-    //console.log(payload);
 
     try {
-      await createTicket(payload);
+      if (mode === 'edit' && ticketId) {
+        await updateTicket(ticketId, payload);
+        alert('Ticket updated successfully!');
+      } else {
+        await createTicket(payload);
+        alert('Ticket created successfully!');
+        // Clear form after creation
+        setTicketData({
+          project: null,
+          issueType: 'Story',
+          summary: '',
+          description: '',
+          assignee: null,
+          priority: 'Low',
+          labels: '',
+          sprint: '',
+          storyPoints: 1,
+          dueDate: null,
+        });
+      }
+      onSuccess(); // Callback for parent components
     } catch (err) {
-      //console.error(err);
       setErrorMessage(err.message);
     }
   };
 
   const createTicket = async (payload) => {
+    const res = await fetch('/api/tickets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Ticket creation failed');
+    }
+    return res.json();
+  };
+
+  // ADD: Update function
+  const updateTicket = async (id, payload) => {
+    const res = await fetch(`/api/tickets/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Ticket update failed');
+    }
+    return res.json();
+  };
+
+  // ADD: Delete function
+  const handleDelete = async () => {
+    if (!ticketId) return;
+    
     try {
-      const res = await fetch('/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      const res = await fetch(`/api/tickets/${ticketId}`, {
+        method: 'DELETE',
       });
 
       if (!res.ok) {
         const data = await res.json();
-        setErrorMessage('Ticket creation failed');
-        throw new Error(data.error || 'Ticket creation failed');
+        throw new Error(data.error || 'Ticket deletion failed');
       }
-
-      return res.json();
+      
+      setDeleteDialogOpen(false);
+      alert('Ticket deleted successfully!');
+      onSuccess(); // Let parent know deletion succeeded
     } catch (err) {
-      setErrorMessage('Network error while creating ticket');
-      throw new Error(err.message || 'Network error while creating ticket');
+      setErrorMessage(err.message);
     }
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div>
-        <h4>Create New Ticket</h4>
+        {}
+        <h4>{mode === 'edit' ? 'Edit Ticket' : 'Create New Ticket'}</h4>
         <Box
           component="form"
-          onSubmit={handleCreateTicketSubmit}
+          onSubmit={handleSubmit}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
+          {}
           <Autocomplete
             options={projects}
             getOptionLabel={(option) => option.name ?? ''}
@@ -259,6 +348,7 @@ function CreateTicketForm() {
             >
               <MenuItem value="Sprint 1">Sprint 1</MenuItem>
               <MenuItem value="Sprint 2">Sprint 2</MenuItem>
+              <MenuItem value="Backlog">Backlog</MenuItem>
             </Select>
           </FormControl>
 
@@ -267,20 +357,57 @@ function CreateTicketForm() {
             <input type="file" hidden />
           </Button>
 
+          {/*Button section */}
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!ticketData.summary}
+              sx={{ flex: mode === 'edit' ? 1 : 'auto' }}
+            >
+              {mode === 'edit' ? 'Update Ticket' : 'Create Ticket'}
+            </Button>
+            
+            {/* ADD: Delete button for edit mode */}
+            {mode === 'edit' && ticketId && (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                Delete Ticket
+              </Button>
+            )}
+          </Box>
+
+          {/* ADD: Delete confirmation dialog */}
+          <Dialog
+            open={deleteDialogOpen}
+            onClose={() => setDeleteDialogOpen(false)}
+          >
+            <DialogTitle>Delete Ticket</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this ticket? This action cannot be undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleDelete} color="error">
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+
           <Snackbar
             open={Boolean(errorMessage)}
+            autoHideDuration={6000}
             onClose={() => setErrorMessage(null)}
           >
-            <Alert severity="error">{errorMessage}</Alert>
+            <Alert severity="error" onClose={() => setErrorMessage(null)}>
+              {errorMessage}
+            </Alert>
           </Snackbar>
-
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={!ticketData.summary}
-          >
-            Create Ticket
-          </Button>
         </Box>
       </div>
     </LocalizationProvider>
