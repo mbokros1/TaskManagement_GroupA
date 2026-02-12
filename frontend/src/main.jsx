@@ -4,7 +4,7 @@ import RootLayout from './layouts/RootLayout.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router';
 
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import TestBoard from './pages/TestBoard.jsx';
+import Board from './pages/Board.jsx';
 import './index.css';
 import App from './App.jsx';
 import keycloak from './keycloak.js';
@@ -37,7 +37,7 @@ keycloak
               <Route path="/" element={<RootLayout />}>
                 <Route index element={<App />} />
                 <Route element={<ProtectedRoute />}>
-                  <Route path="board" element={<TestBoard />} />
+                  <Route path="board" element={<Board />} />
                 </Route>
               </Route>
             </Routes>
