@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import IssueTypeToggle from './issueTypeToggle';
+import UserAutocomplete from './userAutoComplete';
+import ProjectAutocomplete from './ProjectAutocomplete';
 import {
   TextField,
-  Autocomplete,
   Button,
   FormControl,
   InputLabel,
@@ -19,10 +21,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [userInput, setUserInput] = useState('');
-  const [projectInput, setProjectInput] = useState('');
 
   const [ticketData, setTicketData] = useState({
     project: null,
@@ -36,48 +34,6 @@ function CreateTicketForm() {
     storyPoints: 1,
     dueDate: null,
   });
-
-  useEffect(() => {
-    if (!userInput) return;
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => {
-      fetch(`/api/users?search=${encodeURIComponent(userInput)}`, {
-        // double check users endpoint
-        signal: controller.signal,
-      })
-        .then((res) => res.json())
-        .then(setUsers)
-        .catch((err) => {
-          if (err.name !== 'AbortError') console.error(err);
-        });
-    }, 300);
-
-    return () => {
-      clearTimeout(timeout);
-      controller.abort();
-    };
-  }, [userInput]);
-
-  useEffect(() => {
-    if (!projectInput) return;
-    const timeout = setTimeout(() => {
-      fetch(`/api/projects?search=${encodeURIComponent(projectInput)}`) // double check projects route
-        .then((res) => res.json())
-        .then((data) => setProjects(data))
-        .catch(console.error);
-    }, 300);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [projectInput]);
-
-  const issueTypes = [
-    { value: 'Story', color: 'lightblue' },
-    { value: 'Bug', color: 'coral' },
-    { value: 'Task', color: 'lightgreen' },
-    { value: 'Epic', color: 'violet' },
-  ];
 
   const handleChange = (field) => (value) => {
     setTicketData((prev) => ({
@@ -140,48 +96,15 @@ function CreateTicketForm() {
           onSubmit={handleCreateTicketSubmit}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
-          <Autocomplete
-            options={projects}
-            getOptionLabel={(option) => option.name ?? ''}
+          <ProjectAutocomplete
             value={ticketData.project}
-            onChange={(event, newValue) => {
-              handleChange('project')(newValue);
-            }}
-            onInputChange={(event, newInputValue) => {
-              setProjectInput(newInputValue);
-            }}
-            renderInput={(params) => <TextField {...params} label="Project" />}
+            onChange={handleChange('project')}
           />
-          <ToggleButtonGroup
-            value={ticketData.issueType}
-            exclusive
-            onChange={(e, value) => value && handleChange('issueType')(value)}
-          >
-            {issueTypes.map(({ value, color }) => (
-              <ToggleButton key={value} value={value}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 0.5,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: 20,
-                      height: 20,
-                      bgcolor: color,
-                      borderRadius: '2px',
-                    }}
-                  />
-                  <Box component="span" sx={{ fontSize: 12 }}>
-                    {value}
-                  </Box>
-                </Box>
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+
+          <IssueTypeToggle
+            selectedType={ticketData.issueType}
+            onTypeChange={handleChange('issueType')}
+          />
 
           <TextField
             label="Summary: "
@@ -206,18 +129,12 @@ function CreateTicketForm() {
             }}
             disablePast
           />
-          <Autocomplete
-            options={users}
-            getOptionLabel={(option) => option.name}
+
+          <UserAutocomplete
             value={ticketData.assignee}
-            onChange={(event, newValue) => {
-              handleChange('assignee')(newValue);
-            }}
-            onInputChange={(event, newInputValue) => {
-              setUserInput(newInputValue);
-            }}
-            renderInput={(params) => <TextField {...params} label="Assignee" />}
+            onChange={handleChange('assignee')}
           />
+
           <FormControl fullWidth>
             <InputLabel id="priority-label">Priority</InputLabel>
             <Select
