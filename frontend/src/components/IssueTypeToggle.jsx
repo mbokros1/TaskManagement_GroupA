@@ -1,6 +1,7 @@
 import { ToggleButton, ToggleButtonGroup, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 
-function IssueTypeToggle(selectedType, onTypeChange) {
+function IssueTypeToggle({ selectedType, onTypeChange }) {
   const issueTypes = [
     { type: 'Story', color: 'lightblue' },
     { type: 'Bug', color: 'coral' },
@@ -45,5 +46,10 @@ function IssueTypeToggle(selectedType, onTypeChange) {
     </ToggleButtonGroup>
   );
 }
+
+IssueTypeToggle.propTypes = {
+  selectedType: PropTypes.string,
+  onTypeChange: PropTypes.func.isRequired,
+};
 
 export default IssueTypeToggle;

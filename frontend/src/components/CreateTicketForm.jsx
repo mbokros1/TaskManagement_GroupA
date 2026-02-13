@@ -2,6 +2,7 @@ import { useState } from 'react';
 import IssueTypeToggle from './issueTypeToggle';
 import UserAutocomplete from './userAutoComplete';
 import ProjectAutocomplete from './ProjectAutocomplete';
+import SummaryField from './SummaryField';
 import {
   TextField,
   Button,
@@ -106,12 +107,9 @@ function CreateTicketForm() {
             onTypeChange={handleChange('issueType')}
           />
 
-          <TextField
-            label="Summary: "
-            value={ticketData.summary}
-            onChange={(e) => handleChange('summary')(e.target.value)}
-            placeholder="task name"
-            required
+          <SummaryField
+            summary={ticketData.summary}
+            onUpdateSummary={handleChange('summary')}
           />
           <TextField
             label="Description: "
