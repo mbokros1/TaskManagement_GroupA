@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
