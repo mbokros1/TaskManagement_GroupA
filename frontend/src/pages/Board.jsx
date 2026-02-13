@@ -91,13 +91,7 @@ export default function Board() {
     { id: 'done', title: 'Done' },
   ];
 
-  if (boardLoading || tasksLoading) {
-    return (
-      <Box>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const isInitialLoading = (boardLoading || tasksLoading) && !currentBoard;
 
   if (!currentBoard) {
     return (
@@ -123,7 +117,6 @@ export default function Board() {
   return (
     <Box sx={{ height: '100%', bgcolor: '#fafafa' }}>
       <Box sx={{ maxWidth: 1400, mx: 'auto', px: 3, py: 3 }}>
-        {/* Board Header */}
         <Box
           sx={{
             display: 'flex',
@@ -137,7 +130,6 @@ export default function Board() {
               variant="h4"
               sx={{ fontWeight: 400, color: '#333', mb: 0.5 }}
             >
-              {/* Show Project Name + Board Name */}
               {project?.name} / {currentBoard?.name}
             </Typography>
             <Typography variant="body2" sx={{ color: '#888' }}>
@@ -150,7 +142,6 @@ export default function Board() {
             </Typography>
           </Box>
 
-          {/* Search and Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <TextField
               placeholder="Search tasks..."
@@ -184,7 +175,6 @@ export default function Board() {
           </Box>
         </Box>
 
-        {/* Kanban Columns */}
         <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
           {columns.map((column) => (
             <Column key={column.id} column={column} tasks={filteredTasks} />
