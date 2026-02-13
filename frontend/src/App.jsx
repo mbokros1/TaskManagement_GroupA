@@ -1,4 +1,5 @@
 import './App.css';
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import useAuth from './auth/useAuth.js';
