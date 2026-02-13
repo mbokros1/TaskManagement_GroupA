@@ -1,6 +1,17 @@
-import { Box, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import { useInlineEdit } from '../../hooks/useInlineEdit';
+import { useTasks } from '../../context/TasksContext';
 
-export default function StoryPoints({ points }) {
+export default function StoryPoints({ taskId, points }) {
+  const { updateTask, updatingIds } = useTasks();
+
+  const editProps = useInlineEdit(points, (val) => {
+    const parsed = parseInt(val, 10);
+    if (!isNaN(parsed) && parsed >= 0) {
+      updateTask(taskId, { storyPoints: parsed });
+    }
+  });
+
   return (
     <Box
       sx={{
@@ -15,12 +26,13 @@ export default function StoryPoints({ points }) {
         justifyContent: 'center',
       }}
     >
-      <Typography
-        variant="caption"
-        sx={{ fontWeight: 500, color: '#555', fontSize: '0.65rem' }}
-      >
-        {points}
-      </Typography>
+      <TextField
+        {...editProps}
+        variant="filled"
+        disabled={updatingIds.has(taskId)}
+        inputMode="numeric"
+        fontSize="0.65rem"
+      />
     </Box>
   );
 }

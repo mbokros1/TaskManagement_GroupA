@@ -1,23 +1,22 @@
-import { useState } from 'react';
 import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  InputAdornment,
-  IconButton,
-} from '@mui/material';
-import {
-  Search as SearchIcon,
   Add as AddIcon,
   FilterList as FilterIcon,
+  Search as SearchIcon,
 } from '@mui/icons-material';
 import {
-  tasks as initialTasks,
-  columns,
-  boardInfo,
-} from '../data/mockBoardData.js';
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import { Link, useOutletContext } from 'react-router';
 import TaskCard from '../components/task-card/TaskCard.jsx';
+import { useBoard } from '../context/BoardContext.jsx';
+import { useTasks } from '../context/TasksContext.jsx';
 
 // Column Component
 function Column({ column, tasks }) {
@@ -77,27 +76,53 @@ function Column({ column, tasks }) {
 }
 
 export default function Board() {
-  const [tasks] = useState(initialTasks);
+  const { currentBoard, loading: boardLoading } = useBoard();
+  const { tasks, loading: tasksLoading } = useTasks();
+  const { project } = useOutletContext();
   const [searchQuery, setSearchQuery] = useState('');
 
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const columns = currentBoard?.columns || [
+    { id: 'todo', title: 'To Do' },
+    { id: 'in-progress', title: 'In Progress' },
+    { id: 'done', title: 'Done' },
+  ];
+
+  if (boardLoading || tasksLoading) {
+    return (
+      <Box>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!currentBoard) {
+    return (
+      <Box sx={{ p: 4, textAlign: 'center' }}>
+        <Typography variant="h5" color="error" gutterBottom>
+          Board Not Found
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          {"We couldn't find a board with that ID in the "}
+          <strong>{project?.name}</strong> project.
+        </Typography>
+        <Button
+          variant="contained"
+          component={Link}
+          to={`/projects/${project?.id}/board`}
+        >
+          Back to Boards List
+        </Button>
+      </Box>
+    );
+  }
+
   return (
-    <Box
-      sx={{
-        height: '100%',
-        bgcolor: '#fafafa',
-        width: '100vw',
-        marginLeft: 'calc(-50vw + 50%)',
-      }}
-    >
-      {/* Main Content */}
-      <Box
-        sx={{
-          maxWidth: 1400,
-          mx: 'auto',
-          px: 3,
-          py: 3,
-        }}
-      >
+    <Box sx={{ height: '100%', bgcolor: '#fafafa' }}>
+      <Box sx={{ maxWidth: 1400, mx: 'auto', px: 3, py: 3 }}>
         {/* Board Header */}
         <Box
           sx={{
@@ -107,13 +132,13 @@ export default function Board() {
             mb: 3,
           }}
         >
-          {/* Title and Date */}
           <Box>
             <Typography
               variant="h4"
               sx={{ fontWeight: 400, color: '#333', mb: 0.5 }}
             >
-              {boardInfo.title}
+              {/* Show Project Name + Board Name */}
+              {project?.name} / {currentBoard?.name}
             </Typography>
             <Typography variant="body2" sx={{ color: '#888' }}>
               {new Date().toLocaleDateString('en-US', {
@@ -125,19 +150,13 @@ export default function Board() {
             </Typography>
           </Box>
 
-          {/* Search, Filter, Create Task */}
+          {/* Search and Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <TextField
               placeholder="Search tasks..."
               size="small"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{
-                width: 220,
-                '& .MuiOutlinedInput-root': {
-                  bgcolor: 'white',
-                },
-              }}
               slotProps={{
                 input: {
                   startAdornment: (
@@ -147,34 +166,18 @@ export default function Board() {
                   ),
                 },
               }}
-            />
-            <Button
-              variant="outlined"
-              startIcon={<FilterIcon />}
               sx={{
-                borderColor: '#ddd',
-                color: '#555',
-                textTransform: 'none',
-                '&:hover': {
-                  borderColor: '#bbb',
-                  bgcolor: 'white',
-                },
+                width: 220,
+                '& .MuiOutlinedInput-root': { bgcolor: 'white' },
               }}
-            >
+            />
+            <Button variant="outlined" startIcon={<FilterIcon />}>
               Filter
             </Button>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              sx={{
-                bgcolor: '#333',
-                color: 'white',
-                textTransform: 'uppercase',
-                fontWeight: 500,
-                '&:hover': {
-                  bgcolor: '#444',
-                },
-              }}
+              sx={{ bgcolor: '#333' }}
             >
               Create Task
             </Button>
@@ -182,16 +185,9 @@ export default function Board() {
         </Box>
 
         {/* Kanban Columns */}
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            overflowX: 'auto',
-            pb: 2,
-          }}
-        >
+        <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
           {columns.map((column) => (
-            <Column key={column.id} column={column} tasks={tasks} />
+            <Column key={column.id} column={column} tasks={filteredTasks} />
           ))}
         </Box>
       </Box>
