@@ -14,7 +14,6 @@ export default function ProjectOverview() {
 
   return (
     <Box sx={{ p: 4 }}>
-      {/* Breadcrumbs for easy navigation back to list */}
       <Breadcrumbs sx={{ mb: 2 }}>
         <Link
           to="/projects"
@@ -47,7 +46,7 @@ export default function ProjectOverview() {
             variant="contained"
             startIcon={<Dashboard />}
             component={Link}
-            to="board" // Relative link to the board route
+            to="board"
           >
             Go to Boards
           </Button>
