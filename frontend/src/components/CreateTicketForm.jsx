@@ -3,6 +3,7 @@ import IssueTypeToggle from './issueTypeToggle';
 import UserAutocomplete from './userAutoComplete';
 import ProjectAutocomplete from './ProjectAutocomplete';
 import SummaryField from './SummaryField';
+import DescriptionField from './DescriptionField';
 import {
   TextField,
   Button,
@@ -111,13 +112,9 @@ function CreateTicketForm() {
             summary={ticketData.summary}
             onUpdateSummary={handleChange('summary')}
           />
-          <TextField
-            label="Description: "
-            multiline
-            minRows={4}
-            value={ticketData.description}
-            onChange={(e) => handleChange('description')(e.target.value)}
-            placeholder="Please describe this task here."
+          <DescriptionField
+            description={ticketData.description}
+            onUpdateDescription={handleChange('description')}
           />
           <DatePicker
             label="Due Date: "
