@@ -8,16 +8,7 @@ import DueDatePicker from './DueDatePicker';
 import PriorityLabel from './PriorityLabel';
 import StoryPointButtonGroup from './StoryPointButtonGroup';
 import LabelsField from './LabelsField';
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box,
-  Snackbar,
-  Alert,
-} from '@mui/material';
+import { Button, Box, Snackbar, Alert } from '@mui/material';
 
 function CreateTicketForm() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -139,18 +130,6 @@ function CreateTicketForm() {
           labels={ticketData.labels}
           onUpdateLabels={handleChange('labels')}
         />
-
-        <FormControl fullWidth>
-          <InputLabel>Sprint</InputLabel>
-          <Select
-            value={ticketData.sprint}
-            label="Sprint"
-            onChange={(e) => handleChange('sprint')(e.target.value)}
-          >
-            <MenuItem value="Sprint 1">Sprint 1</MenuItem>
-            <MenuItem value="Sprint 2">Sprint 2</MenuItem>
-          </Select>
-        </FormControl>
 
         <Button variant="outlined" component="label">
           Add Attachment
