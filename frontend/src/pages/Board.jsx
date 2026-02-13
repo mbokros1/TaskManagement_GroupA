@@ -6,7 +6,6 @@ import {
 import {
   Box,
   Button,
-  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -76,8 +75,8 @@ function Column({ column, tasks }) {
 }
 
 export default function Board() {
-  const { currentBoard, loading: boardLoading } = useBoard();
-  const { tasks, loading: tasksLoading } = useTasks();
+  const { currentBoard } = useBoard();
+  const { tasks } = useTasks();
   const { project } = useOutletContext();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -90,8 +89,6 @@ export default function Board() {
     { id: 'in-progress', title: 'In Progress' },
     { id: 'done', title: 'Done' },
   ];
-
-  const isInitialLoading = (boardLoading || tasksLoading) && !currentBoard;
 
   if (!currentBoard) {
     return (
