@@ -1,6 +1,8 @@
 import express from 'express';
 import { verifyToken } from '../middleware/auth.js';
 import { requireRole } from '../middleware/authorize.js';
+import { syncUser } from '../middleware/syncUser.js';
+import userRoutes from './users.js';
 
 const router = express.Router();
 
@@ -18,6 +20,12 @@ router.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+router.use(verifyToken, syncUser);
+
+router.use('/users', userRoutes);
+
+router.get('/me', (req, res) => res.json({ user: req.user }));
+
 /**
  * @openapi
  * /api/me:
@@ -32,9 +40,9 @@ router.get('/health', (req, res) => {
  *       401:
  *         description: Missing or invalid token
  */
-router.get('/me', verifyToken, (req, res) => {
-  res.json({ user: req.user });
-});
+// router.get('/me', verifyToken, (req, res) => {
+//   res.json({ user: req.user });
+// });
 
 const handler = (req, res) => {
   res.json({ ok: true, role: req.user.roles });
