@@ -6,6 +6,7 @@ import SummaryField from './SummaryField';
 import DescriptionField from './DescriptionField';
 import DueDatePicker from './DueDatePicker';
 import PriorityLabel from './PriorityLabel';
+import StoryPointButtonGroup from './StoryPointButtonGroup';
 import {
   TextField,
   Button,
@@ -13,8 +14,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  ToggleButton,
-  ToggleButtonGroup,
   Box,
   Snackbar,
   Alert,
@@ -131,17 +130,10 @@ function CreateTicketForm() {
           onUpdatePriority={handleChange('priority')}
         />
 
-        <ToggleButtonGroup
-          value={ticketData.storyPoints}
-          exclusive
-          onChange={(e, value) => value && handleChange('storyPoints')(value)}
-        >
-          {[1, 2, 3, 5, 8, 13].map((point) => (
-            <ToggleButton key={point} value={point}>
-              {point}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
+        <StoryPointButtonGroup
+          points={ticketData.storyPoints}
+          onUpdatePoints={handleChange('storyPoints')}
+        />
 
         <TextField
           label="Labels"
