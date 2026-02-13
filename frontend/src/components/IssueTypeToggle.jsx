@@ -20,7 +20,7 @@ function IssueTypeToggle({ selectedType, onTypeChange }) {
       }}
     >
       {issueTypes.map(({ type, color }) => (
-        <ToggleButton key={type} value={type}>
+        <ToggleButton key={type} value={type} sx={{ flex: 1 }}>
           <Box
             sx={{
               display: 'flex',
