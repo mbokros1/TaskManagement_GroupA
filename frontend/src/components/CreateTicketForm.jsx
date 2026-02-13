@@ -5,6 +5,7 @@ import ProjectAutocomplete from './ProjectAutocomplete';
 import SummaryField from './SummaryField';
 import DescriptionField from './DescriptionField';
 import DueDatePicker from './DueDatePicker';
+import PriorityLabel from './PriorityLabel';
 import {
   TextField,
   Button,
@@ -125,19 +126,10 @@ function CreateTicketForm() {
           onChange={handleChange('assignee')}
         />
 
-        <FormControl fullWidth>
-          <InputLabel id="priority-label">Priority</InputLabel>
-          <Select
-            labelId="priority-label"
-            label="Priority"
-            value={ticketData.priority}
-            onChange={(e) => handleChange('priority')(e.target.value)}
-          >
-            <MenuItem value="Low">Low</MenuItem>
-            <MenuItem value="Medium">Medium</MenuItem>
-            <MenuItem value="High">High</MenuItem>
-          </Select>
-        </FormControl>
+        <PriorityLabel
+          priority={ticketData.priority}
+          onUpdatePriority={handleChange('priority')}
+        />
 
         <ToggleButtonGroup
           value={ticketData.storyPoints}
