@@ -7,7 +7,7 @@ import {
   requireRole,
   requireAnyRole,
   requireAllRoles,
-} from './authorize.js';
+} from '../middleware/authorize.js';
 
 describe('authorize helpers', () => {
   let user;

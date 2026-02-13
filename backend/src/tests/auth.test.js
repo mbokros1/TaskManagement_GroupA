@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { verifyToken } from './auth.js';
+import { verifyToken } from '../middleware/auth.js';
 
 vi.mock('jose');
 vi.mock('../config/keycloak.js');
