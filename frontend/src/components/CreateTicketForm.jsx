@@ -7,8 +7,8 @@ import DescriptionField from './DescriptionField';
 import DueDatePicker from './DueDatePicker';
 import PriorityLabel from './PriorityLabel';
 import StoryPointButtonGroup from './StoryPointButtonGroup';
+import LabelsField from './LabelsField';
 import {
-  TextField,
   Button,
   FormControl,
   InputLabel,
@@ -135,12 +135,11 @@ function CreateTicketForm() {
           onUpdatePoints={handleChange('storyPoints')}
         />
 
-        <TextField
-          label="Labels"
-          placeholder="frontend, api, sprint-12"
-          value={ticketData.labels}
-          onChange={(e) => handleChange('labels')(e.target.value)}
+        <LabelsField
+          labels={ticketData.labels}
+          onUpdateLabels={handleChange('labels')}
         />
+
         <FormControl fullWidth>
           <InputLabel>Sprint</InputLabel>
           <Select
