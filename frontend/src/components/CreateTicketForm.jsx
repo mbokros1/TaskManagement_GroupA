@@ -4,6 +4,7 @@ import UserAutocomplete from './userAutoComplete';
 import ProjectAutocomplete from './ProjectAutocomplete';
 import SummaryField from './SummaryField';
 import DescriptionField from './DescriptionField';
+import DueDatePicker from './DueDatePicker';
 import {
   TextField,
   Button,
@@ -17,9 +18,6 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function CreateTicketForm() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -90,112 +88,108 @@ function CreateTicketForm() {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div>
-        <h4>Create New Ticket</h4>
-        <Box
-          component="form"
-          onSubmit={handleCreateTicketSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+    <div>
+      <h4>Create New Ticket</h4>
+      <Box
+        component="form"
+        onSubmit={handleCreateTicketSubmit}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+      >
+        <ProjectAutocomplete
+          value={ticketData.project}
+          onChange={handleChange('project')}
+        />
+
+        <IssueTypeToggle
+          selectedType={ticketData.issueType}
+          onTypeChange={handleChange('issueType')}
+        />
+
+        <SummaryField
+          summary={ticketData.summary}
+          onUpdateSummary={handleChange('summary')}
+        />
+
+        <DescriptionField
+          description={ticketData.description}
+          onUpdateDescription={handleChange('description')}
+        />
+
+        <DueDatePicker
+          dueDate={ticketData.dueDate}
+          onDueDateUpdate={handleChange('dueDate')}
+        />
+
+        <UserAutocomplete
+          value={ticketData.assignee}
+          onChange={handleChange('assignee')}
+        />
+
+        <FormControl fullWidth>
+          <InputLabel id="priority-label">Priority</InputLabel>
+          <Select
+            labelId="priority-label"
+            label="Priority"
+            value={ticketData.priority}
+            onChange={(e) => handleChange('priority')(e.target.value)}
+          >
+            <MenuItem value="Low">Low</MenuItem>
+            <MenuItem value="Medium">Medium</MenuItem>
+            <MenuItem value="High">High</MenuItem>
+          </Select>
+        </FormControl>
+
+        <ToggleButtonGroup
+          value={ticketData.storyPoints}
+          exclusive
+          onChange={(e, value) => value && handleChange('storyPoints')(value)}
         >
-          <ProjectAutocomplete
-            value={ticketData.project}
-            onChange={handleChange('project')}
-          />
+          {[1, 2, 3, 5, 8, 13].map((point) => (
+            <ToggleButton key={point} value={point}>
+              {point}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
 
-          <IssueTypeToggle
-            selectedType={ticketData.issueType}
-            onTypeChange={handleChange('issueType')}
-          />
-
-          <SummaryField
-            summary={ticketData.summary}
-            onUpdateSummary={handleChange('summary')}
-          />
-          <DescriptionField
-            description={ticketData.description}
-            onUpdateDescription={handleChange('description')}
-          />
-          <DatePicker
-            label="Due Date: "
-            value={ticketData.dueDate}
-            onChange={(newValue) => {
-              handleChange('dueDate')(newValue);
-            }}
-            disablePast
-          />
-
-          <UserAutocomplete
-            value={ticketData.assignee}
-            onChange={handleChange('assignee')}
-          />
-
-          <FormControl fullWidth>
-            <InputLabel id="priority-label">Priority</InputLabel>
-            <Select
-              labelId="priority-label"
-              label="Priority"
-              value={ticketData.priority}
-              onChange={(e) => handleChange('priority')(e.target.value)}
-            >
-              <MenuItem value="Low">Low</MenuItem>
-              <MenuItem value="Medium">Medium</MenuItem>
-              <MenuItem value="High">High</MenuItem>
-            </Select>
-          </FormControl>
-
-          <ToggleButtonGroup
-            value={ticketData.storyPoints}
-            exclusive
-            onChange={(e, value) => value && handleChange('storyPoints')(value)}
+        <TextField
+          label="Labels"
+          placeholder="frontend, api, sprint-12"
+          value={ticketData.labels}
+          onChange={(e) => handleChange('labels')(e.target.value)}
+        />
+        <FormControl fullWidth>
+          <InputLabel>Sprint</InputLabel>
+          <Select
+            value={ticketData.sprint}
+            label="Sprint"
+            onChange={(e) => handleChange('sprint')(e.target.value)}
           >
-            {[1, 2, 3, 5, 8, 13].map((point) => (
-              <ToggleButton key={point} value={point}>
-                {point}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+            <MenuItem value="Sprint 1">Sprint 1</MenuItem>
+            <MenuItem value="Sprint 2">Sprint 2</MenuItem>
+          </Select>
+        </FormControl>
 
-          <TextField
-            label="Labels"
-            placeholder="frontend, api, sprint-12"
-            value={ticketData.labels}
-            onChange={(e) => handleChange('labels')(e.target.value)}
-          />
-          <FormControl fullWidth>
-            <InputLabel>Sprint</InputLabel>
-            <Select
-              value={ticketData.sprint}
-              label="Sprint"
-              onChange={(e) => handleChange('sprint')(e.target.value)}
-            >
-              <MenuItem value="Sprint 1">Sprint 1</MenuItem>
-              <MenuItem value="Sprint 2">Sprint 2</MenuItem>
-            </Select>
-          </FormControl>
+        <Button variant="outlined" component="label">
+          Add Attachment
+          <input type="file" hidden />
+        </Button>
 
-          <Button variant="outlined" component="label">
-            Add Attachment
-            <input type="file" hidden />
-          </Button>
+        <Snackbar
+          open={Boolean(errorMessage)}
+          onClose={() => setErrorMessage(null)}
+        >
+          <Alert severity="error">{errorMessage}</Alert>
+        </Snackbar>
 
-          <Snackbar
-            open={Boolean(errorMessage)}
-            onClose={() => setErrorMessage(null)}
-          >
-            <Alert severity="error">{errorMessage}</Alert>
-          </Snackbar>
-
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={!ticketData.summary}
-          >
-            Create Ticket
-          </Button>
-        </Box>
-      </div>
-    </LocalizationProvider>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={!ticketData.summary}
+        >
+          Create Ticket
+        </Button>
+      </Box>
+    </div>
   );
 }
 
