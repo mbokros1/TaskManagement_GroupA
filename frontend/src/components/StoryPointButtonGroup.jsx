@@ -10,7 +10,7 @@ function StoryPointButtonGroup({ points, onUpdatePoints }) {
         onUpdatePoints(value);
       }}
     >
-      {[1, 2, 3, 5, 8, 13].map((point) => (
+      {[1, 2, 3, 5, 8, 13, 21, 34].map((point) => (
         <ToggleButton key={point} value={point}>
           {point}
         </ToggleButton>
