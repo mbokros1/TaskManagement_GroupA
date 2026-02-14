@@ -30,9 +30,9 @@ describe('syncUser middleware', () => {
 
   it('calls next() and does nothing if req.user.sub is missing', async () => {
     const req = makeReq({ user: {} });
-    const res = {};
+    const _res = {};
     const next = vi.fn();
-    await syncUser(req, req, next);
+    await syncUser(req, _res, next);
 
     expect(User.findByPk).not.toHaveBeenCalled();
     expect(User.upsert).not.toHaveBeenCalled();
@@ -59,10 +59,10 @@ describe('syncUser middleware', () => {
       headerTz: undefined, // no timezone header
     });
 
-    const res = {};
+    const _res = {};
     const next = vi.fn();
 
-    await syncUser(req, res, next);
+    await syncUser(req, _res, next);
 
     expect(User.findByPk).toHaveBeenCalledWith('sub-1');
     expect(User.upsert).not.toHaveBeenCalled();
@@ -91,10 +91,10 @@ describe('syncUser middleware', () => {
       headerTz: 'America/Los_Angeles',
     });
 
-    const res = {};
+    const _res = {};
     const next = vi.fn();
 
-    await syncUser(req, res, next);
+    await syncUser(req, _res, next);
     expect(User.upsert).toHaveBeenCalledOnce();
 
     // verify timezone being written from header
@@ -129,10 +129,10 @@ describe('syncUser middleware', () => {
       headerTz: 'Asia/Kolkata',
     });
 
-    const res = {};
+    const _res = {};
     const next = vi.fn();
 
-    await syncUser(req, res, next);
+    await syncUser(req, _res, next);
 
     expect(User.findByPk).toHaveBeenCalledWith('sub-2');
     expect(User.upsert).toHaveBeenCalledOnce();
@@ -169,10 +169,10 @@ describe('syncUser middleware', () => {
       headerTz: 'UTC',
     });
 
-    const res = {};
+    const _res = {};
     const next = vi.fn();
 
-    await syncUser(req, res, next);
+    await syncUser(req, _res, next);
     expect(next).toHaveBeenCalledOnce();
     expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
     expect(next.mock.calls[0][0].message).toBe('DB down');
