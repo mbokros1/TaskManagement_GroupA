@@ -90,59 +90,49 @@ function CreateTicketForm() {
           value={ticketData.project}
           onChange={handleChange('project')}
         />
-
         <IssueTypeToggle
           selectedType={ticketData.issueType}
           onTypeChange={handleChange('issueType')}
         />
-
         <SummaryField
           summary={ticketData.summary}
           onUpdateSummary={handleChange('summary')}
         />
-
         <DescriptionField
           description={ticketData.description}
           onUpdateDescription={handleChange('description')}
         />
-
         <DueDatePicker
           dueDate={ticketData.dueDate}
           onDueDateUpdate={handleChange('dueDate')}
         />
-
         <UserAutocomplete
           value={ticketData.assignee}
           onChange={handleChange('assignee')}
         />
-
         <PriorityLabel
           priority={ticketData.priority}
           onUpdatePriority={handleChange('priority')}
         />
-
+        Story Points
         <StoryPointButtonGroup
           points={ticketData.storyPoints}
           onUpdatePoints={handleChange('storyPoints')}
         />
-
         <LabelsField
           labels={ticketData.labels}
           onUpdateLabels={handleChange('labels')}
         />
-
         <Button variant="outlined" component="label">
           Add Attachment
           <input type="file" hidden />
         </Button>
-
         <Snackbar
           open={Boolean(errorMessage)}
           onClose={() => setErrorMessage(null)}
         >
           <Alert severity="error">{errorMessage}</Alert>
         </Snackbar>
-
         <Button
           type="submit"
           variant="contained"
