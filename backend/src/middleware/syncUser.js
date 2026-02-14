@@ -92,10 +92,17 @@ export async function syncUser(req, res, next) {
     const existing = await User.findByPk(req.user.sub);
     // Only sync once every 5 minutes per user
     const SYNC_TTL_MS = 5 * 60 * 1000;
+
     const lastSyncedMs = existing?.lastSyncedAt
       ? existing.lastSyncedAt.getTime()
       : 0;
-    if (existing && Date.now() - lastSyncedMs < SYNC_TTL_MS) {
+
+    const headerTz = req.header('X-User-Timezone');
+    if (
+      existing &&
+      Date.now() - lastSyncedMs < SYNC_TTL_MS &&
+      (!headerTz || headerTz === existing.timezone)
+    ) {
       req.dbUser = existing.toJSON();
       return next();
     }
