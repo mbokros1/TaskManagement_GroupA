@@ -8,13 +8,12 @@ import { User } from '../models/models.js';
  */
 function normalizeTokenUser(tokenUser) {
   const sub = tokenUser?.sub;
-
-  const firstName = tokenUser?.name?.split?.(' ')?.[0] || 'Unknown';
-  const lastName =
-    tokenUser?.name?.split?.(' ')?.slice?.(1)?.join?.(' ') || 'User';
+  const username = tokenUser?.preferred_username || 'User';
+  const firstName = tokenUser?.name?.split?.(' ')?.[0] || username;
+  const lastName = tokenUser?.name?.split?.(' ')?.slice?.(1)?.join?.(' ') || '';
 
   const email = tokenUser?.email || null;
-  const roles = tokenUser?.realm_access.roles || [];
+  const roles = tokenUser?.roles || [];
 
   return { sub, firstName, lastName, email, roles };
 }
@@ -57,13 +56,13 @@ export async function syncUser(req, res, next) {
   try {
     if (!req.user?.sub) return next();
     // Checks if we've already synced this specific token session
-    const tokenIssuedAt = req.user.iat;
     const existing = await User.findByPk(req.user.sub);
-    const lastSyncedTs = existing?.lastSyncedAt
-      ? Math.floor(existing.lastSyncedAt.getTime() / 1000)
+    // Only sync once every 5 minutes per user
+    const SYNC_TTL_MS = 5 * 60 * 1000;
+    const lastSyncedMs = existing?.lastSyncedAt
+      ? existing.lastSyncedAt.getTime()
       : 0;
-
-    if (existing && tokenIssuedAt <= lastSyncedTs) {
+    if (existing && Date.now() - lastSyncedMs < SYNC_TTL_MS) {
       req.dbUser = existing.toJSON();
       return next();
     }
@@ -87,9 +86,9 @@ export async function syncUser(req, res, next) {
 
     await User.upsert(payload);
     req.dbUser = payload;
-    next();
+    return next();
   } catch (err) {
     console.error('syncUser failed:', err);
-    next();
+    return next(err);
   }
 }
