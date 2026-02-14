@@ -1,6 +1,6 @@
-const Ticket = require('../models/Ticket'); //../models/Ticket does not exist yet but Ticket needs to be defined
+import { Issue } from '../models/models.js';
 
-export const createTicket = async (req, res) => {
+export const createIssue = async (req, res) => {
   try {
     const {
       issueType,
@@ -14,7 +14,7 @@ export const createTicket = async (req, res) => {
       dueDate,
     } = req.body;
 
-    const ticket = await Ticket.create({
+    const issue = await Issue.create({
       issueType,
       summary,
       description,
@@ -39,7 +39,7 @@ export const createTicket = async (req, res) => {
   }
 };
 
-export const getTicketByID = async (req, res) => {
+export const getIssueByID = async (req, res) => {
   try {
     const { id } = req.query;
     const where = {};
@@ -54,6 +54,6 @@ export const getTicketByID = async (req, res) => {
 
 // _req and _res used so linter does not flag unused variables in stub functions
 
-export const updateTicket = async (_req, _res) => {};
+export const updateIssue = async (_req, _res) => {};
 
-export const deleteTicket = async (_req, _res) => {};
+export const deleteIssue = async (_req, _res) => {};
