@@ -1,10 +1,7 @@
 import express from 'express';
-import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 const ticketsController = require('../controllers/tickets.controller');
-
-router.use(verifyToken);
 
 // post
 router.post('/', ticketsController.createTicket);
