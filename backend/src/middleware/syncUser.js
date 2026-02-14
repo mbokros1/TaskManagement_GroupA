@@ -1,10 +1,29 @@
 import { User } from '../models/models.js';
 
 /**
+ * A minimal user shape extracted from Keycloak token claims.
+ * @typedef {Object} NormalizedTokenUser
+ * @property {string|undefined} sub - Keycloak user id (JWT "sub")
+ * @property {string} firstName - Derived from `name` or `preferred_username`
+ * @property {string} lastName - Derived from `name` (may be empty)
+ * @property {string|null} email - Email claim, may be null/missing
+ * @property {string[]} roles - Realm roles (filtered elsewhere); may be empty
+ */
+
+/**
  * Extract a reasonable user profile from req.user (Keycloak token claims)
  *
- * @param {*} tokenUser
- * @returns sub, firstName, lastName, email, roles
+ * Notes:
+ * - If `name` is missing, falls back to `preferred_username`.
+ * - `lastName` can be empty if no space-separated parts exist.
+ *
+ * @param {Object} tokenUser - req.user object populated by auth middleware
+ * @param {string} [tokenUser.sub]
+ * @param {string} [tokenUser.name]
+ * @param {string} [tokenUser.preferred_username]
+ * @param {string} [tokenUser.email]
+ * @param {string[]} [tokenUser.roles]
+ * @returns {NormalizedTokenUser} normalized user fields for DB sync
  */
 function normalizeTokenUser(tokenUser) {
   const sub = tokenUser?.sub;
@@ -19,10 +38,10 @@ function normalizeTokenUser(tokenUser) {
 }
 
 /**
- * Choose a single role.
+ * Choose a single "primary" role for the shadow User record.
  *
- * @param {*} roles
- * @returns
+ * @param {string[]} [roles=[]] - role names from the token
+ * @returns {'admin'|'developer'|'clinician'} selected primary role
  */
 function pickPrimaryRole(roles = []) {
   const priority = ['admin', 'developer', 'clinician'];
@@ -33,11 +52,16 @@ function pickPrimaryRole(roles = []) {
 }
 
 /**
- * Determine timezone.
+ * Resolve the user's timezone.
  *
- * @param {*} req
- * @param {*} existingTz
- * @returns
+ * Resolution order:
+ * 1) request header `X-User-Timezone` (IANA string recommended, e.g. "America/Toronto")
+ * 2) existing DB timezone (if present)
+ * 3) fallback "UTC"
+ *
+ * @param {import('express').Request} req
+ * @param {string|undefined|null} existingTz - timezone currently stored in DB
+ * @returns {string} resolved timezone string
  */
 function resolveTimezone(req, existingTz) {
   const headerTz = req.header('X-User-Timezone');
@@ -45,12 +69,21 @@ function resolveTimezone(req, existingTz) {
 }
 
 /**
- * Middleware: upsert current user into DB on any authenticated request.
+ * Middleware: upsert the current authenticated user into the local DB.
  *
- * @param {*} req
- * @param {*} res
- * @param {*} next
- * @returns
+ * Purpose:
+ * - Keeps a local "shadow User" record in sync with Keycloak claims.
+ * - Allows the rest of the app to reference Users via foreign keys (assignees, reporters, etc.).
+ *
+ * Behavior:
+ * - Requires `req.user.sub` (set by verifyToken).
+ * - Uses a TTL (5 minutes) to avoid writing on every request.
+ * - On success, attaches the shadow record to `req.dbUser`.
+ *
+ * @param {import('express').Request & { user?: { sub?: string }, dbUser?: any }} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @returns {Promise<void>}
  */
 export async function syncUser(req, res, next) {
   try {
